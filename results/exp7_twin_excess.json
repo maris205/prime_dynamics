@@ -1,0 +1,12 @@
+{
+  "rho_logistic": 0.22042763976342106,
+  "mean_gap": 4.536636154491663,
+  "mu_2_logistic": 0.4703662614213559,
+  "mu_2_cramer_naive": 0.17183929539174853,
+  "mu_2_cramer_parity": 0.22042763976342106,
+  "p_infty": 0.5964,
+  "excess_naive": 2.737245054159726,
+  "excess_parity": 2.1338805874172,
+  "excess_geometric": 1.165426812243201,
+  "twin_const_hardy_littlewood_2C2": 1.3203236316
+}

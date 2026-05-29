@@ -1,0 +1,110 @@
+% Related Work section. Loaded from main.tex via \input{related_work.tex}.
+
+\section{Related work}
+\label{sec:related}
+
+This section locates the present paper within four lines of literature
+that the unimodal-sieve framework intersects with.
+
+\paragraph{Probabilistic models of the primes.}
+The earliest mathematical model of the primes is Cram\'er's
+\cite{cramer1936order}: each integer $n \geq 2$ is independently
+declared prime with probability $1/\log n$. The model gives the right
+first-order density and the right gap-distribution exponential tail,
+but is well known to fail at second order. Pintz \cite{pintz2007cramer}
+documents the model's predictions for the largest gap below $N$
+(Cram\'er $\sim \log^2 N$ vs.\ correct order $\log^2 N \cdot e^{-\gamma}$
+under Granville's refinement) and exhibits structural counter-examples
+that no i.i.d.\ model can capture. Our parity-rigidity result
+(Theorem~B) is a deterministic dynamical analogue of one of these
+structural failures: in the unimodal projection, the parity-twisted
+order forbids odd gaps with probability one, a constraint absent from
+any independent random model. The 1D unimodal map can therefore be
+read as a \emph{deterministic refinement of Cram\'er} that is exact at
+the mod-$2$ level.
+
+\paragraph{Hardy--Littlewood prime $k$-tuples.}
+The Hardy--Littlewood conjecture \cite{hardy1923some} predicts the
+density of prime constellations in terms of an arithmetic singular
+series: $\pi_2(N) \sim 2 C_2 N / (\log N)^2$ for twin primes, and
+analogous formulas for triplets and quadruplets with constants $H_3, H_4, \ldots$.
+Our Theorem~C and its corollary on the absence of mod-$3$ resonance
+should be read as making precise which features of this conjecture the
+unimodal model can and cannot reproduce. The model captures the
+$1/(\log N)^2$ envelope through parity rigidity and a non-autonomous
+parameter drift; it is provably blind to the $p$-dependent factors
+$(1 - 1/(p-1)^2)$ for $p \geq 3$ in the singular series, because those
+factors are encoded in mod-$p$ residue classes that the 1D Markov
+chain has no mechanism to track. The empirical comparison
+(Appendix~\ref{app:exp}) makes this divergence quantitative.
+
+\paragraph{Granville--Soundararajan uncertainty principle.}
+A general framework for the limits of probabilistic models of arithmetic
+sequences was developed by Granville and Soundararajan
+\cite{granville2007uncertainty}: any sufficiently rich model that
+matches the first-order density is forced to violate the prime $k$-tuple
+conjecture for some $k$, and the form of the violation can be related
+to the model's symmetry group. Our Theorem~C is a concrete dynamical
+realisation of this principle: the unimodal map at $u_c$ projects the
+arithmetic structure of the primes onto a one-dimensional Markov
+shift whose only carried symmetry is mod $2$. The first-order density
+($1/\log N$ via the non-autonomous schedule) and the twin density
+(via parity rigidity) survive the projection; everything mod $3$ or
+higher is irretrievably lost. We propose this as the cleanest
+non-probabilistic example of a Granville--Soundararajan-type
+obstruction in a deterministic dynamical setting.
+
+\paragraph{Cellarosi--Sinai dynamical systems for arithmetic sequences.}
+Cellarosi and Sinai \cite{cellarosi2013ergodic} construct a
+$\mathbb{B}$-free dynamical system for square-free integers and prove
+that it admits an invariant measure of explicit product form, with
+exponential decay of correlations. The system shares structural
+features with ours --- a symbolic shift, an absolutely continuous
+invariant measure, and an arithmetic origin --- but differs in two
+crucial respects. First, their system is built from the indicator of
+$\mathcal{B}$-free integers, whose acim is computable in closed form,
+whereas $f_{u_c}$ has an acim guaranteed by Misiurewicz
+\cite{misiurewicz1981absolutely} but with no known explicit density.
+Second, their construction is fully translation-invariant, while ours
+is non-autonomous (the parameter $u_n \to u_c$ under the logarithmic
+schedule of \cite{wang2026emergence}). The two systems can be read as
+distinct \emph{abelian shadows} of the same underlying arithmetic: the
+$\mathcal{B}$-free shadow captures multiplicativity but cannot see
+gaps directly, while the unimodal shadow captures parity-twisted gap
+structure but cannot see multiplicative residues. We expect that a
+common refinement carrying both pieces of information (perhaps in the
+form of a higher-dimensional skew-product) would simultaneously
+extend both lines.
+
+\paragraph{Bounded-gaps results and the present work.}
+The recent work of Zhang \cite{zhang2014bounded} and Maynard
+\cite{maynard2015small} establishes unconditionally that
+$\liminf_{n} (p_{n+1} - p_n) < \infty$. These results live entirely on
+the analytic-number-theory side and do not interact directly with our
+dynamical framework; we cite them to position the conditional
+recurrence statement of Section~\ref{sec:twin-pathway} as an
+independent route that, unlike Maynard, would yield $\limsup$-type
+statements (infinite recurrence of L-R-L constellations) only under
+the arithmetic shadowing conjecture.
+
+\paragraph{Numerical-heuristic and AI-assisted approaches to prime statistics.}
+Two strands of recent work share our methodological signature.
+\cite{wang2026emergence} models the prime distribution as the symbolic
+dynamics of a one-dimensional unimodal map and recovers $C_2$
+(its construction is the concrete vehicle of the present analysis).
+\cite{chaoticsieve2025} instead builds a chaotic multidimensional sieve
+coupled to random-matrix predictions for prime gaps, deriving a
+heuristic bounded-gaps conclusion. Both efforts treat the unimodal /
+multidimensional chaotic system as a \emph{symbolic medium} into which
+prime statistics are projected, and use large-scale numerical
+experiments to suggest exact relations that could then be examined
+rigorously. Our results sit on the rigorous side of this same
+methodology: Theorem~A and Theorem~B are unconditional consequences
+\emph{within the symbolic-dynamics framework}, while
+Corollary~\ref{cor:no-mod-3} provides a sharp obstruction (no mod-$3$
+resonance) that any future refinement of the chaotic-symbolic strategy
+must overcome. More broadly, this paper joins a growing line of
+AI-assisted, numerically-driven explorations in mathematics
+\cite{davies2021advancing,romera2024funsearch,trinh2024alphageometry,aidriven2024review,mathmachsurvey2024}
+in which experiments do not replace proof, but isolate the right
+structural lemma to prove.

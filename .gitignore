@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.pytest_cache/
+
+# LaTeX build artefacts
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+
+# OS / editor cruft
+.DS_Store
+*.swp
+*~
+
+# Local-only state
+REVIEW_STATE.json
+.claude/
+
+# Upstream reference repo (independent git repo, not submoduled)
+prime_logistic/
+
+# Heavy raw data and notebooks not needed in repo
+data/
+*.aux.log

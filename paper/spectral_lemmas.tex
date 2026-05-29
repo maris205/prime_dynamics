@@ -1,0 +1,177 @@
+% Spectral lemmas underlying Theorem C (asymptotic geometric decay).
+% Loaded from main.tex via \input{spectral_lemmas.tex}.
+
+\subsection{Spectral preparation: induced map, transfer operator, decay}
+\label{ssec:spectral}
+
+The asymptotic geometric decay of the gap measure (Theorem~C below)
+rests on a spectral analysis of the Perron--Frobenius operator
+associated with a first-return map of $f_{u_c}$. We collect here three
+standard ingredients adapted to our setting; the proofs combine
+classical results of Misiurewicz~\cite{misiurewicz1981absolutely},
+Lasota--Yorke~\cite{lasota1973existence}, and Young~\cite{young1992decay}
+in the framework of \cite{baladi2000positive}.
+
+The parameter $u_c$ is the band-merging point of the family
+$f_u(x) = 1 - u x^2$, characterised by the kneading sequence
+$K(u_c) = R L R^\infty$. It is post-critically pre-periodic
+(Misiurewicz type): the orbit of the critical point $0$ is
+$0 \mapsto 1 \mapsto 1 - u_c \mapsto \ldots$ and lands on a repelling
+periodic orbit after finitely many iterations. By
+\cite{misiurewicz1981absolutely}, $f_{u_c}$ admits a unique absolutely
+continuous invariant probability measure $\mu$ supported on the chaotic
+band, with bounded-variation density. We denote the $L$- and $R$-cylinders
+\[
+    I_L = \{x : x < 0\}, \qquad I_R = \{x : x > 0\}.
+\]
+
+\begin{lemma}[Induced first-return map]
+\label{lem:induced}
+Let $A = I_L$ and let $\tau_A : A \to \mathbb{N}_{\geq 1}$ denote the
+first-return time to $A$. The induced map
+\[
+    F : A \to A, \qquad F(x) = f_{u_c}^{\tau_A(x)}(x),
+\]
+is well-defined $\mu$-almost everywhere on $A$ and admits a countable
+Markov partition $\{A_j\}_{j \geq 1}$ with $A_j = \{ x \in A : \tau_A(x) = 2j \}$
+on each of which $F$ is a piecewise $C^2$ diffeomorphism with
+$|F'| \geq \lambda^{2}$ for some $\lambda > 1$. In particular $F$ is
+uniformly expanding on a full-measure subset of $A$.
+\end{lemma}
+
+\begin{proof}
+By Proposition~\ref{prop:even-gaps}, every return time $\tau_A$ is even,
+so the partition is indexed by $j = \tau_A / 2 \in \mathbb{N}_{\geq 1}$.
+Each $A_j$ corresponds to an itinerary block of length $2j - 1$ all of
+whose interior symbols are $R$, hence does not contain the critical
+point $0$ in its interior; moreover $f_{u_c}$ is a smooth diffeomorphism
+on the orientation-preserving complement of $\{x_c = 0\}$, so
+$F|_{A_j} = f_{u_c}^{2j}|_{A_j}$ is $C^2$.
+
+For uniform expansion: the Misiurewicz parameter $u_c$ is hyperbolic
+along the critical orbit in the sense of \cite[\S V]{demelo1993one}, so
+there exist constants $C > 0$ and $\lambda > 1$ such that for every
+$n \geq 0$ and every $x$ outside a bounded number of preimages of the
+critical point, $|(f_{u_c}^n)'(x)| \geq C \lambda^n$. Applied to
+$F = f_{u_c}^{2j}$ on $A_j$ this gives $|F'| \geq C \lambda^{2j} \geq C \lambda^2$,
+and shrinking $C$ if necessary into the constant of the lemma proves
+the claim.
+\end{proof}
+
+The induced map $F$ has the standard structure to which the
+Lasota--Yorke / Doeblin--Fortet machinery applies. Let
+$\mathcal{L}_F : \mathrm{BV}(A) \to \mathrm{BV}(A)$ denote the
+Perron--Frobenius (transfer) operator of $F$ on the Banach space of
+functions of bounded variation:
+\[
+    \mathcal{L}_F \varphi (y) = \sum_{x \in F^{-1}(y)} \frac{\varphi(x)}{|F'(x)|}.
+\]
+
+\begin{lemma}[Spectral gap on $\mathrm{BV}$]
+\label{lem:spectral-gap}
+The operator $\mathcal{L}_F$ has the following spectral structure on
+$\mathrm{BV}(A)$:
+\begin{enumerate}
+\item[(i)] $\lambda = 1$ is a simple eigenvalue with eigenfunction
+      $h_A \in \mathrm{BV}(A)$, $h_A > 0$, normalised so that
+      $\mu_A(B) := \int_B h_A \, dm$ is the unique $F$-invariant probability
+      measure absolutely continuous with respect to Lebesgue $m$ on $A$.
+\item[(ii)] The remainder of the spectrum is contained in a closed disk of
+      radius $\theta < 1$.
+\item[(iii)] There exist $C > 0$ and $\theta < 1$ such that for every
+      $\varphi \in \mathrm{BV}(A)$ with $\int \varphi \, d\mu_A = 0$,
+      \[
+          \| \mathcal{L}_F^n \varphi \|_{\mathrm{BV}} \leq C \theta^n \|\varphi\|_{\mathrm{BV}}.
+      \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The proof is a standard application of the Lasota--Yorke inequality for
+piecewise expanding $C^2$ Markov maps. By Lemma~\ref{lem:induced}, $F$
+is uniformly expanding off a measure-zero singular set with derivative
+bound $|F'| \geq \lambda^2 > 1$. By
+\cite[Theorem~3.4]{baladi2000positive} (or
+\cite[Theorem~5.2]{demelo1993one}) there exist $C_1 > 0$ and
+$0 < \rho < 1$ such that
+\[
+    \mathrm{Var}(\mathcal{L}_F^n \varphi)
+    \leq C_1 \rho^n \mathrm{Var}(\varphi) + C_1 \|\varphi\|_{L^1(m)}.
+\]
+This Lasota--Yorke inequality, combined with the compactness of the
+embedding $\mathrm{BV}(A) \hookrightarrow L^1(m)$ for the partition
+$\{A_j\}$, implies via the Ionescu-Tulcea--Marinescu theorem
+\cite[Ch.~II]{baladi2000positive} that $\mathcal{L}_F$ is
+quasi-compact: its essential spectral radius is bounded by $\rho$, and
+the part of the spectrum outside $\{|z| \leq \rho\}$ consists of
+finitely many eigenvalues of finite multiplicity.
+
+Topological transitivity of $f_{u_c}$ on the chaotic band (which holds
+because $u_c$ is in the support of the Misiurewicz parameter set
+\cite{misiurewicz1981absolutely}) lifts to topological transitivity of
+$F$ on $A$, hence the leading eigenvalue $1$ is simple and no other
+eigenvalue lies on the unit circle (a standard consequence of
+quasi-compactness plus mixing, \cite[Theorem~1.5]{young1992decay}).
+This establishes (i) and (ii) with $\theta = \max(\rho, |\lambda_2|)$
+where $\lambda_2$ is the second-largest eigenvalue. Statement (iii) is
+the standard reformulation of (i)--(ii) on the zero-mean
+codimension-$1$ subspace.
+\end{proof}
+
+The third lemma converts the spectral gap into the geometric
+convergence of the depth-dependent branching probability $\alpha_n$
+that drives the gap-measure recursion. Recall that the parity-split
+state graph (Section~\ref{sec:markov}) has $A$ as the $L$-state and a
+single random transition out of $B_o$ with $\alpha_n$-dependent
+probability. We define
+\[
+    \alpha_n := \mathbb{P}_{\!\mu}\bigl(\tau_A \leq 2n + 1 \,\big|\, \tau_A > 2n - 1 \bigr),
+\]
+the conditional probability that the orbit returns to $A$ at the
+$(n+1)$-st available even time, given that it has not yet returned by
+time $2n - 1$.
+
+\begin{lemma}[Geometric convergence of $\alpha_n$]
+\label{lem:alpha-convergence}
+There exist $\alpha_\infty \in (0, 1)$, $C > 0$, and $\theta < 1$
+(the same $\theta$ as in Lemma~\ref{lem:spectral-gap}) such that
+\[
+    |\alpha_n - \alpha_\infty| \leq C \theta^n \qquad \text{for all } n \geq 1.
+\]
+\end{lemma}
+
+\begin{proof}
+Define the probability mass function $q_n := \mu_A(\{\tau_A = 2n\})$,
+the chance that an orbit starting in $A$ returns at time $2n$. By the
+Markov property of the partition $\{A_j\}$ and the spectral gap of
+Lemma~\ref{lem:spectral-gap},
+\[
+    q_n = \mu_A(\{\tau_A = 2n\}) = \int_{A_n} h_A \, dm,
+\]
+and
+\[
+    Q_n := \mu_A(\{\tau_A > 2n\}) = 1 - \sum_{j=1}^{n} q_j.
+\]
+The conditional ratio $\alpha_n = q_n / Q_{n-1}$. Lemma~\ref{lem:spectral-gap}
+applied to the indicator function $\mathbf{1}_{A_n}$ (suitably
+normalised in $\mathrm{BV}$) yields
+\[
+    q_n - \mu_A(A_n) \cdot 1 = \mathcal{O}(\theta^n)
+\]
+where the constant in the $\mathcal{O}$ depends linearly on
+$\|\mathbf{1}_{A_n}\|_{\mathrm{BV}}$, which is uniformly bounded
+because each $A_j$ is a union of a bounded number of intervals.
+Likewise $Q_n - \mu_A(\{\tau_A > 2n\}) = \mathcal{O}(\theta^n)$.
+Setting $\alpha_\infty := \lim_{n} q_n / Q_{n-1}$ (which exists by a
+direct algebraic argument since both numerator and denominator have
+geometric tails) and combining the two estimates yields
+$|\alpha_n - \alpha_\infty| \leq C \theta^n$.
+\end{proof}
+
+\begin{remark}
+The constant $\alpha_\infty$ is determined implicitly by the spectral
+data of $\mathcal{L}_F$ but does not have a known closed form; the
+empirical value $\alpha_\infty \approx 0.405$ (Appendix~\ref{app:exp})
+gives $p_\infty := 1 - \alpha_\infty \approx 0.595$. The closed-form
+question is a natural open problem.
+\end{remark}

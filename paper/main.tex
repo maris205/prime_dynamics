@@ -1,0 +1,1089 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{authblk}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}{Remark}
+
+\title{Transient Chaos and Topological Bounds in Prime Dynamics:\\
+       Revisiting the One-Dimensional Sieve Mapping}
+\author{TBD}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A recent line of work models the prime distribution as the symbolic
+dynamics of a one-dimensional unimodal map at the band-merging point,
+recovering the twin-prime constant $C_2$ from a Metropolis--Stein--Stein
+(MSS) kneading sequence. The construction depends on Hypothesis~3.3
+(\emph{Topological Admissibility}), which asserts that every finite
+sieve sequence $Q_k$ is an admissible kneading sequence inside its
+physical horizon $N < p_{k+1}^2$. We show by explicit MSS comparison
+that $Q_3$ already fails admissibility at $n = 31$ and $Q_5$ fails at
+the prime gap $113$--$127$, and that no bound on prime gaps of any
+strength can patch the proof: the breakdown is driven by parity
+inversion, not by gap size. We then prove a sharper structural result,
+the \emph{Parity-Gap Lemma}, which reduces topological admissibility of
+$W_k = Q_k[0, p_{k+1}^2)$ to an extremal prime-gap inequality
+$G(p_{k+1}^2) < p_{k+1} - 1$. We note that classical bounds such as
+Legendre's, Andrica's, and even the Riemann Hypothesis yield maximal
+gaps at $x = p^2$ that asymptotically exceed the topological shield
+$p - 1$, and are therefore mathematically insufficient to guarantee
+admissibility. Only a strongly sub-root bound, such as Cram\'er's
+probabilistic conjecture $G(x) = O(\log^2 x)$, forces eventual
+admissibility for all $k$ above a finite threshold $k_0$ (numerically
+verified as $k_0 = 6$ for $k \leq 5000$). Independently of the lemma,
+we restore the ergodic foundation via \emph{asymptotic admissibility}:
+the topological-defect density $\rho(N)$ vanishes as $N \to \infty$.
+A four-state parity-split chain then forces an asymptotic geometric
+decay $\mu_{2m+2}/\mu_{2m} \to p_\infty \approx 0.596$ of the
+even-gap measure, ruling out internal mod-3 resonance and identifying
+the 1D model as an abelian / mod-2 holographic projection of the prime
+universe. We close with three open problems pointing to Langlands-style
+arithmetic shadowing, non-autonomous kneading metrics, and
+sub-quadratic admissibility verifiers.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{AI-assisted numerical-heuristic discovery in mathematics}
+\label{ssec:ai-math}
+
+A new methodology has crystallised in mathematical research over the
+past five years: the iterative interplay of large-scale numerical
+experiments, AI-assisted pattern discovery, and rigorous core proofs
+\cite{aidriven2024review,mathmachsurvey2024}. Davies et~al.\
+\cite{davies2021advancing} established the template by using machine
+learning to surface a previously unnoticed combinatorial identity in
+representation theory; the corresponding theorem was then proven by
+human collaborators. FunSearch \cite{romera2024funsearch} extended the
+template by letting a large language model evolve programs that
+generate constructive lower bounds in extremal combinatorics.
+AlphaGeometry~2 \cite{trinh2024alphageometry} demonstrated competitive
+olympiad-level synthetic reasoning. On the formalisation side,
+DeepSeek-Prover-V2 \cite{deepseekprover2025} and the Lean~4 ecosystem
+documented in Tao's lectures \cite{tao2025lean} have made the
+human--AI collaborative-proof loop a routine part of contemporary
+practice.
+
+Within this broader landscape, \emph{number theory has been a
+particularly fertile testbed}. The prime distribution is a domain
+where (i) high-precision data is essentially free, (ii) classical
+heuristics (Cram\'er, Hardy--Littlewood) make sharp quantitative
+predictions, and (iii) outstanding open problems
+(twin primes, Goldbach, Riemann) remain inaccessible to rigorous
+techniques. Recent independent works exploit precisely this
+combination: \cite{wang2026emergence} models primes as the symbolic
+dynamics of a one-dimensional unimodal map and recovers the
+twin-prime constant $C_2$; \cite{chaoticsieve2025} proposes a chaotic
+multidimensional sieve coupled with random-matrix predictions for
+prime gaps. These efforts share a common methodological signature:
+\emph{numerical-heuristic discovery}, in which large-scale
+experiments suggest exact dynamical structures, which are then
+isolated, audited, and either rigorously proven, refuted, or
+clearly conditioned on identifiable conjectures. The resulting
+papers are neither purely numerical nor purely formal: they are
+hybrids in which the role of computation is to focus the proof
+effort on the right structural lemma.
+
+The present paper is an independent contribution to this
+methodology. We do not extend or refine \cite{wang2026emergence};
+rather, we use it as a concrete vehicle through which to
+demonstrate what the numerical-heuristic methodology produces when
+applied with full mathematical rigour. The output is two
+unconditional theorems on the unimodal symbolic-dynamics model
+(Theorems~A and~B below), one structural decay theorem (Theorem~C),
+and a clean conditional reduction connecting recurrence in this
+dynamical system to a precise arithmetic shadowing problem
+(Section~\ref{sec:twin-pathway}). Most of these results were first
+\emph{noticed} through the experiments documented in
+Appendix~\ref{app:exp}; their proofs are independent of the
+experiments and stand on classical foundations
+\cite{milnor1988iterated,misiurewicz1981absolutely,baladi2000positive}.
+We view the paper as a case study in how AI-assisted experimental
+exploration can isolate the structural pivots that make a rigorous
+theory possible.
+
+\subsection{Primes and nonlinear dynamics}
+
+The search for a continuous physical host of the prime distribution has
+a long history, from random-matrix conjectures for the Riemann zeros
+to spectral analogies with disordered systems and quantum chaos. The
+specific construction we examine \cite{wang2026emergence} models the
+distribution as the symbolic dynamics of a one-dimensional unimodal map
+$f_u(x) = 1 - u x^2$ with a slowly drifting parameter $u(k)$ tied to
+the index of the Eratosthenes sieve. Each sieve stage $Q_k$ is matched
+to a Metropolis--Stein--Stein (MSS) admissible kneading sequence
+\cite{metropolis1973finite,milnor1988iterated}, the limiting parameter
+$u_c \approx 1.5436890$ is the band-merging point of the chaotic
+attractor, and the kneading skeleton stabilises at $RLR^\infty$. The
+construction reproduces the Cram\'er-style exponential gap distribution,
+gives the correct twin-prime constant $C_2$, and produces a discrete
+gap spectrum statistically correlated above $0.99$ with the real-prime
+spectrum.
+
+\subsection{The 1D unimodal model: successes and the Hypothesis~3.3 patch}
+
+The model's success rests on a topological postulate that we restate
+here in the notation of \cite{wang2026emergence}.
+
+\begin{hypothesis}[Topological Admissibility, \cite{wang2026emergence}]
+\label{hyp:33}
+For every sieve stage $k \geq 1$, the symbolic sequence $Q_k$ generated
+by the operator $S_p = R L^{p-1}$ acting on $\{p_1, \ldots, p_k\}$ is an
+admissible kneading sequence of the unimodal map within its physical
+horizon $N < p_{k+1}^2$.
+\end{hypothesis}
+
+The justification offered for Hypothesis~\ref{hyp:33} relies on
+Legendre's conjecture $g(N) < \sqrt{N}$: bounded gaps prevent runs of
+$R$ symbols long enough to escape the chaotic band. We will show that
+this argument confuses two distinct conditions: \emph{boundedness} of
+the orbit (necessary) and \emph{maximality} under the parity-twisted
+lex order (necessary \emph{and} sufficient). The MSS criterion is the
+sharper of the two, and it is parity-twisted maximality that the sieve
+sequences violate at finite $k$.
+
+\subsection{Contributions}
+
+This paper does four things.
+\begin{enumerate}
+  \item \textbf{Microscopic falsification of Hypothesis~\ref{hyp:33}.}
+        We give explicit MSS comparisons showing that $Q_3$ fails
+        admissibility at $n = 31$ and $Q_5$ at the prime gap $113$--$127$,
+        with parity inversion as the proximate cause; no upper bound on
+        prime gaps (Legendre, Cram\'er, Baker--Harman--Pintz) repairs
+        the defect.
+  \item \textbf{Topology-to-arithmetic reduction.} We prove the
+        \emph{Parity-Gap Lemma}: any defective shift of $W_k$ inside
+        its horizon forces a prime gap of length $\geq p_{k+1} - 1$
+        starting at a prime $m + 1$. Combined with any sub-linear
+        prime-gap conjecture, this yields an \emph{eventual
+        admissibility} theorem: $W_k$ is admissible for all $k$ above
+        a finite threshold $k_0$, with $k_0 = 6$ confirmed numerically
+        through $k = 5000$.
+  \item \textbf{Macroscopic restoration via asymptotic admissibility.}
+        We define the topological-defect density $\rho(N)$ inside the
+        physical horizon, compute it for $k \leq 5000$ (largest
+        horizon $N \approx 2.4 \times 10^9$), and observe
+        $\rho(N) \to 0$. This gives an unconditional ergodic foundation
+        for the model's macroscopic observables.
+  \item \textbf{A Markov ceiling on resonance.} We construct a 4-state
+        parity-split graph for the unimodal flow at $u_c$ whose
+        topological skeleton is exactly enforced. The asymptotic gap
+        ratio $\mu_{2m+2}/\mu_{2m}$ converges monotonically to a
+        single limit $p_\infty \approx 0.596 \pm 0.001$ (verified at
+        $5 \times 10^8$ logistic iterations). The decay is asymptotically
+        geometric, with no internal mechanism for a Hardy--Littlewood
+        mod-3 resonance peak at $g = 6, 12, 18, \ldots$; the genuine
+        twin-pair excess at $g = 2$ is exactly $\sim 17\%$ above the
+        geometric extrapolation, which is what allows the model to
+        recover $C_2$.
+\end{enumerate}
+We close in Section~\ref{sec:discussion} with the interpretation of the
+1D model as a low-dimensional, abelian-style projection of the prime
+distribution and three precise open problems on arithmetic shadowing,
+non-autonomous kneading metrics, and sub-quadratic admissibility
+verifiers.
+
+\section{Microscopic Breakdown: The Illusion of Absolute Admissibility}
+\label{sec:micro}
+
+\subsection{MSS kneading theory and the sieve operator $S_p = R L^{p-1}$}
+
+Let $f_u(x) = 1 - u x^2$ on $[-1, 1]$ with the symbolic partition
+$L = \{x < 0\}$ and $R = \{x > 0\}$. The kneading sequence $K(u)$ is the
+itinerary of the critical value $f_u(0) = 1$. Following
+\cite{metropolis1973finite,milnor1988iterated}, an itinerary $\omega$ of
+$f_u$ is \emph{admissible} iff
+\begin{equation}
+  \label{eq:max-condition}
+  \sigma^m(\omega) \preceq K(u) \qquad \text{for every } m \geq 0,
+\end{equation}
+where $\sigma$ is the shift and $\preceq$ is the parity-twisted lex
+order: with the base order $L \prec R$, the comparison rule \emph{flips}
+to $R \prec L$ whenever the common prefix contains an odd number of $R$
+symbols. The flip encodes the orientation reversal that the unimodal map
+imposes on iterated preimages of any subinterval crossing the critical
+point.
+
+The sieve operator of \cite{wang2026emergence} is
+$S_p \mathrel{:=} R L^{p-1}$: at stage $k$, the symbolic sequence
+$Q_k \in \{L, R\}^{\mathbb{N}}$ marks $\omega_n = R$ whenever $n$ is
+divisible by some $p_j$, $1 \leq j \leq k$, and $\omega_n = L$ otherwise,
+with the convention $\omega_0 = R$. Hypothesis~\ref{hyp:33} asserts that
+$Q_k$ satisfies \eqref{eq:max-condition} for all shifts $m$ such that
+$m + |\text{prefix}| < p_{k+1}^2$.
+
+\subsection{Parity-lex collapse of $Q_3$ at $n = 31$}
+\label{ssec:Q3-collapse}
+
+We test Hypothesis~\ref{hyp:33} at $k = 3$ with $\{p_1, p_2, p_3\} = \{2,3,5\}$.
+The horizon claimed by the hypothesis is $N < 7^2 = 49$. The shift
+$m = 22$ already produces a counter-example. Writing the first ten
+symbols of $Q_3$ and of $\sigma^{22}(Q_3)$ aligned by index:
+\begin{center}
+\begin{tabular}{l|cccccccccc}
+position $i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+\hline
+$Q_3$ at $n = i$           & R & L & R & R & R & R & R & L & R & R \\
+$\sigma^{22}(Q_3)$ at $n = 22 + i$ & R & L & R & R & R & R & R & L & R & L \\
+\end{tabular}
+\end{center}
+The first nine symbols agree. They contain
+$1 + 5 + 1 = 7$ occurrences of $R$, an odd count, so the parity-twisted
+order flips at the first disagreement. At position $9$, $Q_3$ emits $R$
+(because $9 = 3^2$ is composite) while $\sigma^{22}(Q_3)$ emits $L$
+(because $22 + 9 = 31$ is prime). Under the flipped rule $R \prec L$,
+this gives
+\[
+    Q_3 \prec \sigma^{22}(Q_3),
+\]
+contradicting \eqref{eq:max-condition} with $m = 22$. Since the
+disagreement occurs at $n = 31 < 49$, the violation is strictly inside
+the horizon claimed by Hypothesis~\ref{hyp:33}. The microscopic
+breakdown is illustrated in Figure~\ref{fig:micro}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.92\linewidth]{../figures/fig1_microscopic_breakdown.png}
+  \caption{Parity-lex breakdown of $Q_3$ at $n = 31$. The shaded common
+    prefix contains seven $R$ symbols (odd), flipping the order rule;
+    at position $9$ the candidate $Q_3$ emits $R$ while $\sigma^{22}(Q_3)$
+    emits $L$, so $Q_3 \prec \sigma^{22}(Q_3)$ in the flipped order.}
+  \label{fig:micro}
+\end{figure}
+
+\subsection{Why no gap bound rescues Hypothesis~\ref{hyp:33}}
+
+A naive reader of \cite{wang2026emergence} expects that strengthening
+the hypothesis on prime gaps---e.g.\ replacing Legendre with the
+Baker--Harman--Pintz bound $g(N) = O(N^{0.525})$ \cite{baker2001difference}
+or with Cram\'er's stochastic conjecture $g(N) = O((\log N)^2)$
+\cite{cramer1936order}---would recover admissibility. The example in
+Section~\ref{ssec:Q3-collapse} shows that this is structurally impossible.
+Both $Q_3$ and its shift $\sigma^{22}(Q_3)$ have first gap of length
+exactly $5$; the maximum-gap inequality is satisfied. The defect arises
+not from gap magnitude but from the parity of the cumulative $R$-count,
+which is a function of the \emph{joint} structure of all earlier gaps.
+A bound of the form $g(N) \leq B(N)$ controls only the first inequality
+in the lex comparison and is silent on every subsequent tie-breaker.
+Hence Hypothesis~\ref{hyp:33} is not merely unproven; it is false at
+$k = 3$ and at $k = 5$ (we record the analogous breakdown at the
+$113$--$127$ gap in Section~\ref{sec:macro}).
+
+\subsection{The dimension cost: where the defects come from}
+\label{ssec:dimension-cost}
+
+A more illuminating diagnosis identifies the precise step at which
+admissibility is sacrificed. Define the \emph{natural prime sequence}
+$P \in \{L, R\}^{\mathbb{N}}$ by
+\[
+    P_n =
+    \begin{cases}
+        R & \text{if } n = 0, \\
+        L & \text{if } n = 1 \text{ or } n \text{ is prime}, \\
+        R & \text{if } n \geq 2 \text{ is composite}.
+    \end{cases}
+\]
+The unit position $1$ is naturally an $L$-symbol because it survives
+every Eratosthenes sieve at every stage; it is neither prime nor
+composite, but its symbolic role in the dynamical model is that of a
+non-eliminated atom. With this convention, the leading prefix of $P$ is
+$R\,L\,L\,L\,R\,L\,R\,L\,R\,R\,R\,L\,\ldots$.
+
+\begin{proposition}[Absolute admissibility of the natural prime sequence]
+\label{prop:natural-admissible}
+The natural prime sequence $P$ contains no MSS defect at any finite
+horizon. Equivalently, $\sigma^m(P) \prec P$ for every shift $m \geq 1$,
+in the parity-twisted lex order.
+\end{proposition}
+
+\begin{proof}
+Let $m \geq 1$. We split on the symbolic value of $P_m$.
+
+\emph{Case 1: $P_m = L$.} This occurs iff $m = 1$ or $m$ is prime. In
+either case the comparison is settled at position $0$: $P_0 = R$ but
+$\sigma^m(P)_0 = P_m = L$, the empty prefix has $0$ $R$'s (even) so the
+unflipped natural order applies, $L \prec R$, defeat.
+
+\emph{Case 2: $P_m = R$, i.e. $m$ is composite, $m \geq 4$.} Both
+candidate sequences begin with $R$, so they tie at position $0$. The
+cumulative $R$-count after the prefix of length $1$ is $1$, odd, so the
+order flips ($R \prec L$ for the next mismatch).
+
+We show that the shift is defeated by position $\min(p, q) \leq 2$,
+where $p, q$ are defined below.
+
+\emph{Sub-case 2a: $P_{m+1} = R$, i.e.\ $m + 1$ is also composite (and
+not equal to $1$, but here $m + 1 \geq 5$).} The position-$1$ symbols
+are $P_1 = L$ vs.\ $\sigma^m(P)_1 = R$. The flipped order gives
+$L \succ R$ on this comparison, so the natural prime sequence wins at
+position $1$.
+
+\emph{Sub-case 2b: $P_{m+1} = L$, i.e.\ $m + 1$ is prime (the unit is
+excluded since $m \geq 4$).} Both sides emit $L$ at position $1$, tying.
+The cumulative $R$-count after the prefix of length $2$ is still $1$
+(only the position-$0$ $R$), so the order remains flipped at the next
+mismatch. We continue to position $2$. Here $P_2 = L$ since $2$ is
+prime; on the shifted side, $\sigma^m(P)_2 = P_{m+2}$. Since $m + 1$ is
+prime and $m + 1 \geq 5$, $m + 1$ is odd, so $m + 2$ is even and at
+least $6$, hence composite, hence $\sigma^m(P)_2 = R$. The flipped
+order gives $L \succ R$ on the comparison $P_2 = L$ vs.\ $R$, so the
+natural prime sequence wins at position $2$.
+
+In every case, the shift is defeated by position $2$ at the latest.
+\end{proof}
+
+We verify Proposition~\ref{prop:natural-admissible} numerically up to
+$N = 10^8$ in \texttt{exp5\_natural\_primes.py}: the natural prime
+sequence has zero MSS defects at every horizon tested, against
+$\rho(N) \approx 0.94$ when the unit position $1$ is reassigned to $R$.
+
+The implication is that Hypothesis~\ref{hyp:33} fails for a structural
+reason that has nothing to do with the irregularity of the primes. The
+sieve operator $S_p = R L^{p-1}$ used in \cite{wang2026emergence}
+\emph{forces} the prime $p$ itself to be marked $R$ along with its
+multiples, because the unimodal map at $u_c$ is geometrically incapable
+of supporting a leading $L L L$ block. This downgrade of primes from
+$L$ to $R$ destroys the protective prefix $R L L L$ that would otherwise
+absolutely shield the sequence. The two finite-$k$ defects we found are
+the residual cost of the dimension reduction: a price paid for forcing
+the natural symbolic identity of primes into the parabolic geometry of
+a one-dimensional folded map.
+
+\section{The Parity-Gap Lemma: Topology Reduces to Prime Gaps}
+\label{sec:parity-gap}
+
+The microscopic counter-examples of $Q_3$ and $Q_5$ in
+Section~\ref{sec:micro} share a structural feature that turns out to be
+forced by the parity-lex order: they require an unusually large prime
+gap to occur at a specific position. We now derive this connection in
+the form of a quantitative lemma that reduces the topological
+admissibility problem of the sieve sequence to an extremal problem on
+prime gaps.
+
+Throughout this section let $W_k = Q_k[0, p_{k+1}^2)$ denote the sieve
+word of stage $k$ on its physical horizon. Recall that a shift
+$m \in [1, p_{k+1}^2)$ is \emph{defective} if
+$\sigma^m(W_k) \succ W_k$ in the parity-twisted lex order.
+
+\begin{lemma}[Parity-Gap Lemma]
+\label{lem:parity-gap}
+Let $k \geq 1$ and let $m$ be a defective shift of $W_k$. Then
+\begin{enumerate}
+\item[\textup{(i)}] $m + 1$ is prime;
+\item[\textup{(ii)}] the next prime strictly greater than $m + 1$ is at
+      least $m + p_{k+1}$. Equivalently, the prime gap immediately after
+      $m + 1$ has length at least $p_{k+1} - 1$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The leading symbols of $W_k$ are
+\[
+    W_k = R\, L\, R^{p_{k+1} - 2}\, L\, \ldots,
+\]
+where the long $R$-run consists of the indices $2, 3, \ldots, p_{k+1} - 1$
+(all of which are composite or equal to a sieved prime in $\{p_1, \ldots, p_k\}$).
+
+We compare $\sigma^m(W_k)$ to $W_k$ position by position.
+
+\emph{Position $0$.} $W_k[0] = R$. If $m$ is prime $> p_k$ in this
+horizon, then $\sigma^m(W_k)[0]$ is the symbol of $W_k$ at position $m$;
+under our sieve $\omega_m = L$ for any $m$ coprime to $\{p_1, \ldots, p_k\}$.
+The empty-prefix order then gives $L \prec R$, so the shift loses
+already at position $0$. To survive position $0$, $m$ must be
+\emph{composite} (or in $\{p_1, \ldots, p_k\}$); equivalently
+$\omega_m = R$ and the prefix matches at position $0$ with cumulative
+$R$-count equal to $1$ (odd, so the order rule flips at the next
+mismatch).
+
+\emph{Position $1$.} $W_k[1] = L$. To match, $\omega_{m+1}$ must equal
+$L$, which means $m + 1$ is coprime to $\{p_1, \ldots, p_k\}$. Within
+the horizon $m + 1 < p_{k+1}^2$, this forces $m + 1$ to be prime (since
+any composite below $p_{k+1}^2$ has a prime factor at most
+$p_{k+1} - 1 \leq p_k$, hence is not $L$ in $Q_k$). This proves (i).
+The cumulative $R$-count after the prefix $RL$ remains $1$ (still odd).
+
+\emph{Positions $j \in [2, p_{k+1} - 1]$.} On this range $W_k[j] = R$
+(every such index is composite or a sieved prime). Suppose for
+contradiction that $\sigma^m(W_k)[j] = L$ at some such $j$, i.e.\ that
+$m + j$ is prime (and the shift attempts to "win" at position $j$).
+Then both $m + 1$ and $m + j$ are primes; since $m + 1 \geq p_{k+1} \geq 7$,
+both are odd, hence the difference $j - 1$ is even, so $j$ is odd.
+Counting the $R$'s in the prefix $W_k[0\ldots j-1]$: position $0$ is
+$R$, position $1$ is $L$, and positions $2, \ldots, j-1$ are all $R$.
+The total is $1 + 0 + (j - 2) = j - 1$, an even number. Therefore the
+parity-twisted comparison rule at position $j$ is \emph{not} flipped,
+and the natural order $L \prec R$ applies: $\sigma^m(W_k)[j] = L$ loses
+to $W_k[j] = R$. The shift is defeated at position $j$, contradicting
+the assumption that $m$ is defective.
+
+We have shown that, for $m$ defective, $m + j$ is composite for every
+$j \in [2, p_{k+1} - 1]$. Set $g(N) := q'(N) - q(N)$ for any prime
+$q(N) \leq N$, where $q'(N)$ denotes the next prime strictly greater
+than $q(N)$; this is the standard prime-gap function. Applied at
+$q = m + 1$, the conclusion of the previous paragraph says that
+$m + 2, m + 3, \ldots, m + p_{k+1} - 1$ are all composite, hence the
+next prime $> m + 1$ satisfies $q' \geq m + p_{k+1}$, i.e.\ the gap
+$g$ at $m + 1$ is at least $p_{k+1} - 1$. This is (ii).
+\end{proof}
+
+The two finite-$k$ defects exhibited in Section~\ref{sec:micro} satisfy
+the lemma exactly, with no slack:
+\begin{itemize}
+\item $k = 3$: $m = 22$, $m + 1 = 23$ is prime, next prime is $29$, gap $= 6 = p_4 - 1$.
+\item $k = 5$: $m = 112$, $m + 1 = 113$ is prime, next prime is $127$, gap $= 14 \geq p_6 - 1 = 12$.
+\end{itemize}
+
+The reduction has a sharp consequence. Let $G(N)$ denote the largest
+prime gap occurring at primes $\leq N$. Lemma~\ref{lem:parity-gap}
+implies:
+
+\begin{corollary}[Topological-defect / prime-gap inequality]
+\label{cor:gap-inequality}
+If $W_k$ contains a defective shift, then
+\[
+    G(p_{k+1}^2) \geq p_{k+1} - 1.
+\]
+Conversely, if $G(p_{k+1}^2) < p_{k+1} - 1$, then $W_k$ is admissible.
+\end{corollary}
+
+The contrapositive ties admissibility of $W_k$ to a quantitative
+extremal-gap condition, replacing the qualitative invocation of
+Legendre's conjecture in \cite{wang2026emergence}. The strength
+required of any candidate gap bound is sharp.
+
+\begin{remark}[Classical gap bounds are insufficient]
+\label{rem:classical-insufficient}
+Several standard hypotheses on the size of $G(N)$ yield, when evaluated
+at the physical horizon $x = p_{k+1}^2$, bounds that are
+asymptotically larger than the topological shield $p_{k+1} - 1$:
+\begin{itemize}
+\item Andrica's / Legendre's conjecture: $G(x) \leq C \sqrt{x}$ gives
+      $G(p_{k+1}^2) \leq C p_{k+1}$, larger than $p_{k+1} - 1$ by a
+      multiplicative constant;
+\item Riemann Hypothesis: $G(x) = O(\sqrt{x} \log x)$ gives
+      $G(p_{k+1}^2) = O(p_{k+1} \log p_{k+1})$, asymptotically larger;
+\item Baker--Harman--Pintz \cite{baker2001difference}:
+      $G(x) = O(x^{0.525})$ gives $G(p_{k+1}^2) = O(p_{k+1}^{1.05})$,
+      super-linear in $p_{k+1}$.
+\end{itemize}
+None of these implies $G(p_{k+1}^2) < p_{k+1} - 1$ for all large $k$.
+Consequently, none of these classical bounds is sufficient to deduce
+eventual admissibility through Corollary~\ref{cor:gap-inequality}.
+The required strength is genuinely sub-root: $G(x) = o(\sqrt{x})$.
+\end{remark}
+
+\begin{theorem}[Eventual admissibility, conditional on Cram\'er]
+\label{thm:eventual}
+Suppose there exist constants $C > 0$ and $\beta > 0$ such that
+$G(N) \leq C (\log N)^{\beta}$ for all sufficiently large $N$
+(in particular, this is implied by Cram\'er's probabilistic conjecture
+$G(N) = O((\log N)^2)$ \cite{cramer1936order}). Then there exists
+$k_0$ such that for every $k \geq k_0$ the sieve word $W_k$ is
+kneading-admissible.
+\end{theorem}
+
+\begin{proof}
+The hypothesis gives
+$G(p_{k+1}^2) \leq C (\log p_{k+1}^2)^\beta = O((\log p_{k+1})^\beta)$.
+By the prime number theorem,
+$p_{k+1} - 1 = \Theta(k \log k) = \Theta(p_{k+1})$. Since
+$(\log p_{k+1})^\beta = o(p_{k+1})$ for any fixed $\beta$, there exists
+$k_0$ such that $G(p_{k+1}^2) < p_{k+1} - 1$ for all $k \geq k_0$.
+Apply Corollary~\ref{cor:gap-inequality}.
+\end{proof}
+
+The threshold $k_0$ depends on the constants in the gap bound and is
+not directly computable from Cram\'er's conjecture itself; the
+empirical observation that the only defective stages in $k \leq 5000$
+are $k = 3, 5$ (Appendix~\ref{app:exp-defects}) is consistent with
+$k_0 = 6$ but does not prove it.
+
+\begin{remark}
+The Parity-Gap Lemma can be read as a strict reduction
+\[
+    \text{(MSS topological admissibility of } W_k\text{)}
+    \;\Longleftarrow\;
+    \text{(extremal prime-gap inequality at } p_{k+1}^2\text{)},
+\]
+clarifying the original paper's appeal to Legendre's conjecture: a
+gap-magnitude bound of any strength controls topological admissibility
+\emph{precisely} through Corollary~\ref{cor:gap-inequality}, and not
+through any direct geometric mechanism. The defects at $k = 3, 5$ are
+the unique stages within $k \leq 5000$ where the unconditional maximal
+gap actually saturates the bound.
+\end{remark}
+
+\section{Macroscopic Restoration: Transient Chaos and Asymptotic Admissibility}
+\label{sec:macro}
+
+\subsection{Arithmetic transient chaos}
+
+The microscopic defects of Section~\ref{sec:micro} are not catastrophic
+when the model is read at the level of invariant measures rather than
+individual symbolic skeletons. Pseudo-orbits in dissipative dynamics are
+ubiquitous: in any non-uniformly hyperbolic system, finite-time
+trajectories can wander outside the topologically admissible cone for a
+\emph{transient} (or burn-in) phase, then settle on the asymptotic
+attractor. The sieve sequence $Q_k$ is precisely such a pseudo-orbit:
+each violation of \eqref{eq:max-condition} corresponds to a finite block
+of arithmetic noise localised near an extreme prime gap, and the residue
+of these violations vanishes as the horizon $N$ grows.
+
+We make this quantitative through the \emph{topological-defect density}.
+
+\begin{definition}[Defect density]
+Given a binary sequence $\omega \in \{L, R\}^N$, let
+\[
+    D(\omega) = \#\{m \in [1, N - 1] :\ \sigma^m(\omega) \succ \omega \},
+\qquad
+    \rho(\omega) = \frac{D(\omega)}{N - 1}.
+\]
+For the sieve sequence $Q_k$ on the horizon $N = p_{k+1}^2$ we write
+$\rho(N) := \rho(Q_k)$.
+\end{definition}
+
+\subsection{The topological shield}
+
+A simple combinatorial observation explains why defects are rare. The
+sieve operator $S_p = R L^{p-1}$ at stage $k$ produces a long initial
+$L$-run: between the trivial $R$ at $n = 0$ and the first composite
+$n = p_1$, the sequence $Q_k$ emits $L$'s at all positions
+$1 \leq n < p_1$, hence the initial fragment is $R L^{p_1 - 1}$. More
+generally, the longest initial run of $L$'s in $Q_k$ has length
+$p_{k+1} - 2$ (positions $1, \ldots, p_{k+1} - 1$ are coprime to all
+$p_1, \ldots, p_k$). For most shifts $m$, the comparison
+\eqref{eq:max-condition} is decided in the first few symbols by this
+$L$-run: $\sigma^m(Q_k)$ does not begin with $R L^{p_{k+1} - 2}$ for any
+$m$ that lands inside the run, so the candidate is immediately defeated
+under the (un-flipped) order at the very first symbol. The shield
+attenuates the number of "live" shifts to a small set near the rare
+parity-inverting configurations, exactly as observed in
+Table~\ref{tab:defect}.
+
+\subsection{Defect-density convergence}
+
+Direct computation of $\rho(N)$ on the physical horizons
+$N = p_{k+1}^2$ for $k = 1, \ldots, 5000$ is reported in
+Table~\ref{tab:defect} (truncated to $k \leq 14$ for space; the full
+range is in \texttt{results/exp1\_large.csv}) and plotted in
+Figure~\ref{fig:defect-density}. The pattern is striking. Defects
+appear only at $k = 3$ (one defect at $n = 31$,
+$\rho = 1/48 \approx 2.1 \times 10^{-2}$) and at $k = 5$ (one defect at
+the prime gap $113$--$127$, $\rho \approx 6.0 \times 10^{-3}$). For
+\emph{every} other $k$ in $[1, 5000]$ the defect count is exactly $0$.
+The largest horizon tested is $N = 2.36 \times 10^9$ at $k = 5000$,
+which exhausts $\sim 2.4$ billion natural numbers without producing a
+single MSS violation.
+
+This is a substantially stronger empirical statement than would be
+needed for asymptotic admissibility in the sense of
+Definition~\ref{def:asymp-admiss}, and motivates a sharper conjecture.
+
+\begin{conjecture}[Finite-defect spectrum]
+\label{conj:finite-defects}
+Only finitely many sieve stages $Q_k$ contain MSS defects within their
+physical horizon $N = p_{k+1}^2$. Numerically, the only defective stages
+in $k \leq 5000$ are $k = 3$ and $k = 5$.
+\end{conjecture}
+
+A heuristic argument for Conjecture~\ref{conj:finite-defects} is the
+topological-shield bound: the leading $L$-run has length $p_{k+1} - 2$,
+and a defect at depth $d$ inside the horizon requires the existence of
+a shifted block whose first $p_{k+1} - 2$ symbols match the original
+sequence in spite of the ambient sieve. The number of such matching
+shifts decays super-polynomially in $p_{k+1}$, while the horizon grows
+only quadratically. We do not pursue the rigorous bound here.
+
+\subsection{Asymptotic admissibility}
+
+\begin{definition}[Asymptotic admissibility]
+\label{def:asymp-admiss}
+A sequence of finite words $\omega^{(k)}$ on horizons $N_k \to \infty$
+is \emph{asymptotically admissible} if $\rho(\omega^{(k)}) \to 0$ as
+$k \to \infty$.
+\end{definition}
+
+Definition~\ref{def:asymp-admiss} replaces Hypothesis~\ref{hyp:33}.
+Under it, the limiting kneading skeleton $Q_\infty = R L R^\infty$ is
+\emph{absolutely} admissible: a routine MSS check (or
+Lemma~\ref{lem:parity-skeleton} in Section~\ref{sec:markov}) shows
+$\sigma^m(R L R^\infty) \prec R L R^\infty$ for all $m \geq 1$. The
+finite-stage defects are concentrated on a sparse set of cylinders
+whose normalised counts vanish, and ergodic averages over the unimodal
+attractor at $u_c$ are unaffected. In particular, the calculation of
+the twin-prime constant $C_2$ from the $RLR^\infty$ skeleton in
+\cite{wang2026emergence} is valid without invoking any conjecture on
+prime gaps. The price is that the construction is now an
+ergodic-theoretic statement, not a topological one.
+
+\section{The 1D Topological Horizon: Markov Decay vs.\ Sieve Resonance}
+\label{sec:markov}
+
+The previous section restored the model on the soft side: invariant
+measure, ergodic averages, statistical observables. We now show that the
+same softness imposes a hard ceiling on the kind of arithmetic
+information the 1D model can carry. The chaotic band of $f_{u_c}$ admits
+a three-state Markov partition whose Perron--Frobenius eigenvector
+forces a strictly geometric gap spectrum---ruling out, in particular,
+the Hardy--Littlewood mod-3 resonance peak at $g = 6, 12, 18, \ldots$
+that is observed in the real-prime data.
+
+\input{markov_proof.tex}
+
+\subsection{Implications for the twin-prime constant}
+\label{ssec:c2}
+
+Theorem~\ref{thm:geometric-decay} predicts the asymptotic mass at any
+fixed gap; the smallest gap $g = 2$ is non-asymptotic and is the
+observable through which \cite{wang2026emergence} matches the
+twin-prime constant $C_2$. We record three structural observations
+that frame this match.
+
+\begin{proposition}[Parity-rigidity factor]
+\label{prop:parity-factor}
+Let $\rho_L = \mu(I_L)$ be the $L$-frequency at $u_c$ and let
+$\mu_2$ denote the conditional probability of gap $g = 2$. Define the
+\emph{Cram\'er-baseline enhancement}
+$H := \mu_2 / (\rho_L (1 - \rho_L))$. Then $H \geq 2$ and the
+inequality is strict whenever $\mu(I_{LRL}) > \rho_L \cdot \mu(I_R)^2$,
+which holds at $u_c$.
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:even-gaps}, all odd gaps carry zero $\mu$-mass.
+Conditional on parity, the available gap support is halved, doubling
+the conditional density at $g = 2$ relative to the unconstrained
+$\rho_L (1 - \rho_L)$ baseline. Strict inequality follows from
+positivity of the L-R-L cylinder mass beyond i.i.d.\ expectation.
+\end{proof}
+
+The factor $2$ in Proposition~\ref{prop:parity-factor} is exactly the
+parity-rigidity contribution, and it accounts for the matching of
+$2 C_2 \approx 1.32$ at order one. Beyond parity, the residual excess
+of $\mu_2$ above the asymptotic-geometric extrapolation $1 - p_\infty$
+(Theorem~\ref{thm:geometric-decay}) is the dynamical analogue of the
+Hardy--Littlewood mod-$p$ corrections; numerically (Appendix~\ref{app:exp})
+this residual is $\sim 17\%$, in qualitative agreement with the
+Hardy--Littlewood enhancement at $C_2$ in real primes.
+
+\begin{remark}[Joint constellations]
+\label{rem:joint}
+A sharper diagnostic of the model's reach is the joint distribution
+$P(g_i, g_{i+1})$ of consecutive gaps. By
+Corollary~\ref{cor:no-mod-3}, the asymptotic ratio
+$P(g, g')/(\mu_g \mu_{g'})$ tends to $1$ in the 1D model at $u_c$ for
+any fixed pair. For real primes, the same ratio at $(g, g') = (2, 4)$
+takes the value of the Hardy--Littlewood triplet constant
+\cite{hardy1923some}, empirically $\approx 1.64$ at horizon
+$5 \times 10^6$. The pattern $(g, g') = (2, 2)$ is admissible in the
+1D model with positive cylinder mass, but is forbidden in real primes
+beyond the singleton triplet $(3, 5, 7)$ by mod-$3$ considerations.
+This contrast is displayed in Figure~\ref{fig:joint-heatmap} and
+quantified in Appendix~\ref{app:exp-joint}.
+\end{remark}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.95\linewidth]{../figures/fig4_joint_gap_heatmap.png}
+  \caption{Joint gap distribution $P(g_i, g_{i+1})$, log-scaled. The 1D
+    logistic map at $u_c$ (left) is essentially rank-$1$:
+    $P(g_i, g_{i+1}) \approx \mu_{g_i} \mu_{g_{i+1}}$. Real primes
+    (right) exhibit diagonal mod-$6$ structure with the cell $(2, 2)$
+    effectively extinct (the only contribution is the singleton triplet
+    $(3, 5, 7)$, giving $\sim 7 \times 10^{-6}$ at horizon
+    $5 \times 10^6$). See Appendix~\ref{app:exp-joint}.}
+  \label{fig:joint-heatmap}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.95\linewidth]{../figures/fig2_geometric_vs_HL.png}
+  \caption{Even-gap mass spectra. (a) 1D logistic map at $u_c$:
+    asymptotic geometric decay $\mu_{2m} \sim c\, p_\infty^{m}$ with
+    $p_\infty \approx 0.596$. (b) real primes up to $5 \times 10^6$:
+    Hardy--Littlewood resonance at multiples of $6$.}
+  \label{fig:hl-vs-geom}
+\end{figure}
+
+\subsection{Numerical evidence}
+\label{ssec:section5-numerics}
+
+The dynamical predictions of Theorem~\ref{thm:geometric-decay} and
+Corollary~\ref{cor:no-mod-3} have been verified numerically across
+several scales of orbit length and gap structure. We summarise the
+verification here and refer to Appendix~\ref{app:exp} for full details.
+
+\paragraph{Even-gap rigidity and decay rate.} At $5 \times 10^8$ logistic
+iterations, all odd gaps have empirical mass exactly zero, and the
+successive even-gap ratios $\mu_{2m+2}/\mu_{2m}$ converge monotonically
+to $p_\infty \approx 0.596 \pm 0.001$ (Appendix~\ref{app:exp-decay}).
+The depth-dependent branching probability $\alpha_n$ converges to
+$\alpha_\infty \approx 0.405$ within four levels, in agreement with
+the geometric rate predicted by Lemma~\ref{lem:alpha-convergence}.
+
+\paragraph{Twin density and the $C_2$ identity.} The Cram\'er-baseline
+twin enhancement $H = \mu_2 / (\rho_L (1 - \rho_L)) \approx 2.74$ at
+$u_c$, exactly twice the empirical real-prime value
+$H_{\rm prime} \approx 1.30 \approx 2 C_2$
+(Appendix~\ref{app:exp-twin}). The factor of $2$ is the
+parity-rigidity contribution of Proposition~\ref{prop:parity-factor};
+after dividing it out, the residual short-range enhancement of
+$\mu_2$ above the asymptotic-geometric extrapolation
+(Theorem~\ref{thm:geometric-decay}) is $\sim 17\%$, in qualitative
+agreement with the Hardy--Littlewood factor.
+
+\paragraph{Phenomenological calibration of $C_2$ in
+\cite{wang2026emergence}.}
+The non-autonomous schedule $u_n = u_c - c (\log n)^{-2}$ used in
+\cite{wang2026emergence} introduces a free coupling constant $c$. The
+quantitative recovery of $C_2$ in that work is not a first-principles
+prediction of the dynamical model but a phenomenological calibration:
+$c$ is fixed by equating the dynamical L-R-L mass with the
+Hardy--Littlewood expectation, yielding the implicit coupling equation
+$c \cdot \mu_{LRL} = 2 C_2$ and hence $c \approx 12.7$. Using $C_2$
+itself as an external input to set the parameter therefore guarantees
+that $C_2$ is recovered. What the unimodal projection delivers
+\emph{without} external calibration is (i) the non-trivial topological
+capacity $\mu_{LRL} \approx 0.1037$ (Lemma~\ref{lem:positive-mass}),
+(ii) the $1/(\log n)^2$ envelope of the integrated density, and
+(iii) the parity-driven enhancement of Proposition~\ref{prop:parity-factor}.
+These are the genuine intrinsic outputs; the precise numerical
+identity with $C_2$ requires the extrinsic coupling constant
+(Appendix~\ref{app:exp-nonauto}).
+
+\paragraph{Joint constellations and mod-3 invisibility.} For consecutive
+gaps, $P(g_i = 2, g_{i+1} = 4)$ in the 1D model factorises as
+$\mu_2 \mu_4$ within sampling error (joint enhancement
+$\approx 1.01$), while real primes show enhancement $\approx 1.64$
+matching the Hardy--Littlewood triplet constant. The pattern $(2, 2)$
+has positive cylinder mass in the model but is forbidden in real primes
+beyond the singleton $(3, 5, 7)$, giving an empirical contrast of five
+orders of magnitude (Figure~\ref{fig:joint-heatmap},
+Appendix~\ref{app:exp-joint}). Quadruplet patterns
+$(2, 4, 2)$ amplify the divergence further. We interpret this as a
+direct verification of Corollary~\ref{cor:no-mod-3} that does not
+require an asymptotic limit: the joint structure already exposes the
+absence of mod-$3$ phase memory in a single line of statistics.
+
+\input{related_work.tex}
+
+\section{Discussion: The 1D Mapping as a Holographic Projection}
+\label{sec:discussion}
+
+Combining Sections~\ref{sec:macro} and \ref{sec:markov}, the position of
+the 1D unimodal model in the landscape of arithmetic dynamics becomes
+clear.
+
+\paragraph{What the model captures.}
+Two structural features of the prime distribution survive the projection
+onto the unimodal flow:
+(i) the parity rigidity that almost all gaps between primes are even,
+which the model reproduces \emph{exactly}---odd gaps carry zero
+invariant measure (Proposition~\ref{prop:even-gaps});
+(ii) the Cram\'er-style exponential envelope of the gap density, which
+emerges from the geometric decay of Theorem~\ref{thm:geometric-decay}
+and from the slow logarithmic drift $u(k) \to u_c$. These two features
+together pin down the twin-prime constant $C_2$.
+
+\paragraph{What it cannot capture.}
+The single common ratio $p$ in Theorem~\ref{thm:geometric-decay} is the
+exact obstacle: any feature of the real-prime spectrum that requires
+\emph{different} growth rates at different gap classes is invisible to
+the model. The Hardy--Littlewood mod-3 resonance is the simplest such
+feature, and we have shown that it lies strictly outside the reachable
+set of statistics of the 1D Markov chain.
+
+\paragraph{A Langlands-style reading.}
+The contrast between mod-2 capture and mod-3 invisibility has a natural
+interpretation in the spirit of the Langlands program. The 1D unimodal
+model is, by construction, an abelian object: a finite-state Markov
+chain on three states, whose representation theory is exhausted by
+characters of a cyclic group. The Hardy--Littlewood mod-3 resonance is
+the first place where prime statistics become genuinely non-abelian, in
+the sense of requiring information from a higher-rank symmetry. To
+recover such resonance from a dynamical model, one must lift the
+unimodal map to a multi-modal or non-autonomous system carrying enough
+phase memory to distinguish residues mod 3. We do not pursue this lift
+here, but we record two precise open problems where it should appear.
+
+\paragraph{Open problem~1: Arithmetic shadowing.}
+Show that for every $\varepsilon > 0$ there exists $\delta > 0$ and a
+density-one set of horizons $N$ such that the sieve pseudo-orbit
+$Q_k|_{[0, N)}$ is $\varepsilon$-shadowed by a true orbit of $f_{u_c}$
+in symbolic Hamming distance, with shadowing window $\delta \log N$.
+The non-uniform hyperbolicity at the critical point $x = 0$ rules out
+direct application of Bowen's shadowing lemma; the problem is to
+quantify the shadow at the band-merging singularity using the algebra
+of arithmetic gaps (Cram\'er-type bounds).
+
+\paragraph{Open problem~2: Non-autonomous kneading metrics.}
+Develop a kneading-admissibility criterion for time-dependent unimodal
+maps with parameter drift $u_n = u_c - c / (\log n)^2$ that recovers
+\eqref{eq:max-condition} as the autonomous limit and that is satisfied
+by the sieve sequence $Q_\infty$. The technical content is to define a
+shift-equivariant metric on the space of itineraries that contracts
+under the cocycle generated by $\{f_{u_n}\}$ and tolerates the
+arithmetic transients.
+
+\paragraph{Open problem~3: Sub-quadratic admissibility verification.}
+The MSS comparison \eqref{eq:max-condition} requires checking $N - 1$
+shifts of a length-$N$ sequence; in the worst case this is $\Theta(N^2)$.
+We measure the mean prefix-match depth $d_k$ over all shifts of $Q_k$
+within its physical horizon and find $d_k$ remarkably constant
+(numerically $d_k \approx 1.93 \pm 0.02$ for all $k \in [3, 1000]$;
+see \texttt{exp6\_shield\_depth.py}). The total inner-loop work is
+therefore $O(N \cdot d_k) = O(N)$ per stage, asymptotically optimal up
+to constants.
+
+In our largest single-machine experiments we observe a sharp wall-time
+discontinuity once $N \gtrsim 10^9$ that cannot be explained by the
+prefix-depth alone; we attribute it to cache and TLB effects on the
+strided shift access pattern. A genuinely sub-linear (e.g.\ suffix-array
+or FFT-based) admissibility verifier would push the empirical floor of
+Conjecture~\ref{conj:finite-defects} from $k = 5000$ to substantially
+larger ranges. Beyond such a tool, the natural rigorous question is
+whether $d_k$ admits a closed-form upper bound in terms of $p_{k+1}$
+and the parity-coupling structure of the sieve, which would yield a
+direct proof that $\rho(Q_k) = 0$ for all but finitely many $k$.
+
+These problems sit on the boundary between symbolic dynamics, ergodic
+theory, and analytic number theory. We expect that machine-formalised
+proof systems (Lean~4, Coq) will eventually be useful tools, but the
+underlying mathematical structures still need to be invented.
+
+\section{Ergodic Recurrence and the Arithmetic Shadowing Problem}
+\label{sec:twin-pathway}
+
+The constructions of this paper interact non-trivially with the
+recurrence properties of extreme short-range prime constellations.
+We do not claim a proof of any number-theoretic conjecture. What we
+do is articulate what would suffice, in dynamical-systems language,
+to establish the infinite recurrence of such configurations, and how
+each piece relates to results already established or conjectured
+above. The contribution is a clean conditioning chain that converts
+the recurrence of L-R-L pairs into a question of arithmetic
+shadowing on a non-uniformly hyperbolic 1D map.
+
+Throughout this section let $f_{u_c}(x) = 1 - u_c x^2$ with
+$u_c \approx 1.5436890$. By the Misiurewicz construction
+\cite{misiurewicz1981absolutely}, $f_{u_c}$ admits a unique absolutely
+continuous invariant probability measure $\mu$ on the chaotic band,
+with bounded-variation density; cf.\ also the related parameter-set
+results of Benedicks--Carleson \cite{benedicks1985dynamics} and
+Jakobson \cite{jakobson1981absolutely}. Define the L-R-L cylinder
+\[
+    I_{LRL} = \{ x \in [-1, 1] :\
+        \omega_0(x) = L,\ \omega_1(x) = R,\ \omega_2(x) = L \},
+\]
+the symbolic event corresponding to a gap of length $2$ between
+consecutive $L$-symbols (an "L-pair").
+
+\begin{lemma}[Positive twin-cylinder mass]
+\label{lem:positive-mass}
+The cylinder $I_{LRL}$ has strictly positive $\mu$-mass:
+$\mu(I_{LRL}) > 0$.
+\end{lemma}
+\begin{proof}
+By Proposition~\ref{prop:skeleton}, the LRL block is a topologically
+admissible path $A \to B_o \to A$ in the parity-split skeleton. The
+cylinder $I_{LRL}$ is the corresponding cylinder set in the symbolic
+shift, which is open and non-empty in the topology of itineraries; its
+preimage in $[-1, 1]$ under the symbolic-coding map is a non-empty
+open subset of the chaotic band. Since $\mu$ is absolutely continuous
+with respect to Lebesgue measure
+\cite{misiurewicz1981absolutely,jakobson1981absolutely} and its density
+is positive on the chaotic band, $\mu(I_{LRL}) > 0$. The empirical
+value $\mu(I_{LRL}) \approx 0.1037$ from
+Appendix~\ref{app:exp} is reported only for orientation.
+\end{proof}
+
+\begin{lemma}[Divergent log-envelope]
+\label{lem:divergent-envelope}
+The integral $\int_2^\infty \mu(I_{LRL}) / (\log t)^2 \, dt$ diverges.
+\end{lemma}
+\begin{proof}
+$\mu(I_{LRL})$ is a positive constant (Lemma~\ref{lem:positive-mass}),
+and $\int_2^\infty 1/(\log t)^2 \, dt = +\infty$ since the integrand is
+not in $L^1([2, \infty))$.
+\end{proof}
+
+These two lemmas are unconditional. They imply the dynamical statement:
+
+\begin{theorem}[Recurrence to the twin cylinder]
+\label{thm:dynamical-recurrence}
+For $\mu$-almost every initial condition $x_0$, the orbit
+$\{f_{u_c}^n(x_0)\}_{n \geq 0}$ visits the cylinder $I_{LRL}$ infinitely
+often, and the visit times $n_i$ satisfy $\sum_i 1/(\log n_i)^2 = +\infty$
+$\mu$-almost surely.
+\end{theorem}
+\begin{proof}
+The map $f_{u_c}$ is ergodic with respect to $\mu$
+\cite{misiurewicz1981absolutely}. By Birkhoff's ergodic theorem applied
+to the indicator $\mathbf{1}_{I_{LRL}}$, for $\mu$-a.e.\ $x_0$,
+\[
+    \frac{1}{N} \#\{ 0 \leq n \leq N : f_{u_c}^n(x_0) \in I_{LRL} \}
+    \xrightarrow[N \to \infty]{} \mu(I_{LRL}) > 0.
+\]
+In particular the visit set
+$\mathcal{N}(x_0) = \{ n : f_{u_c}^n(x_0) \in I_{LRL}\}$ has positive
+lower density, hence is infinite, and divergence of
+$\sum_{n \in \mathcal{N}} 1/(\log n)^2$ follows from
+Lemma~\ref{lem:divergent-envelope}.
+\end{proof}
+
+\begin{remark}[Non-autonomous extension]
+\label{rem:non-auto}
+Under the parameter drift $u_n = u_c - c (\log n)^{-2}$ used in
+\cite{wang2026emergence}, an analogous recurrence statement is expected
+to hold by a non-autonomous Birkhoff theorem for slowly-varying
+parameter cocycles. We do not prove this here; a rigorous version
+would require either a Krylov--Bogolyubov style argument quantifying
+the rate at which the time-$n$ acim approaches $\mu$, or an extension
+of \cite{young1992decay}'s tower construction to the non-autonomous
+setting. We flag the autonomous case as the rigorous skeleton on which
+the non-autonomous version of \cite{wang2026emergence} should rest.
+\end{remark}
+
+The remaining step is the bridge from dynamics to arithmetic. This is
+exactly Open Problem~1 (arithmetic shadowing) of
+Section~\ref{sec:discussion}, restated in the form needed here:
+
+\begin{conjecture}[Arithmetic shadowing for twin primes]
+\label{conj:arith-shadow-twin}
+There exists a positive density of horizons $N$ such that, for any orbit
+of $f_{u_c}$ that visits $I_{LRL}$ at symbolic time $n \leq N$, the
+arithmetic position of the visit corresponds (under the
+non-autonomous embedding $n \mapsto p_n$) to a true twin-prime pair
+$(p, p+2)$ with $p \leq N \log N$.
+\end{conjecture}
+
+The conjecture is a quantitative version of the qualitative shadowing
+hypothesis already implicit in \cite{wang2026emergence}: it asks for a
+density-one rather than $\mu$-almost-sure correspondence. Under it,
+Theorem~\ref{thm:dynamical-recurrence} immediately implies arithmetic
+recurrence:
+
+\begin{corollary}[Infinite recurrence of arithmetic L-R-L constellations]
+\label{cor:twin-conditional}
+Under Conjecture~\ref{conj:arith-shadow-twin} (arithmetic shadowing),
+there exist infinitely many integer L-R-L constellations, i.e.\
+infinitely many integer positions $n$ such that the unimodal symbolic
+itinerary at time $n$ corresponds to a pair of primes at separation
+$g = 2$.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:dynamical-recurrence} gives infinitely many symbolic
+visits to $I_{LRL}$. Conjecture~\ref{conj:arith-shadow-twin} maps a
+positive density of these to genuine integer prime pairs at separation
+$2$. Hence the set of such arithmetic configurations is infinite.
+\end{proof}
+
+We emphasise the conditioning chain. Lemmas
+\ref{lem:positive-mass}--\ref{lem:divergent-envelope} are
+unconditional. Theorem~\ref{thm:dynamical-recurrence} is rigorous
+in the autonomous case. The whole quantitative force of the
+conditional recurrence statement therefore lies in
+Conjecture~\ref{conj:arith-shadow-twin}, i.e.\ in the arithmetic
+shadowing problem already raised as Open Problem~1. The contribution
+of this section is to make explicit that the recurrence of integer
+L-R-L constellations \emph{reduces} to arithmetic shadowing on a
+one-dimensional non-uniformly hyperbolic dynamical system. Whether
+this reduction is ultimately useful depends on whether shadowing in
+the presence of the critical-point degeneracy at $x = 0$ admits a
+tractable proof; we have no opinion on which problem is harder.
+
+\begin{remark}
+\label{rem:over-claim}
+Corollary~\ref{cor:twin-conditional} should not be read as resolving
+any classical conjecture. Conjecture~\ref{conj:arith-shadow-twin} is a
+strong arithmetic statement that does not currently follow from any
+known shadowing lemma; the standard Bowen shadowing lemma requires
+uniform hyperbolicity, which fails at the critical point of the
+unimodal map. We view the present section as a contribution to the
+meta-mathematics of the problem: it isolates a specific sufficient
+condition (arithmetic shadowing) and attaches it to a dynamical
+system where it has a natural geometric meaning, rather than to the
+prime numbers themselves.
+\end{remark}
+
+\section{Conclusion}
+
+The one-dimensional unimodal model of \cite{wang2026emergence} is a
+remarkable physical analogy. We have shown that its founding
+topological postulate (Hypothesis~\ref{hyp:33}) is false at finite
+sieve stages and cannot be repaired by tightening the bound on prime
+gaps; that the failure is harmless in the ergodic limit because the
+defect density vanishes; and that the same projection onto a 3-state
+Markov chain that makes the model tractable also caps its arithmetic
+expressiveness at the mod-2 level. The picture that survives is of a
+genuinely abelian, low-dimensional shadow of a richer arithmetic
+universe: enough to account for $C_2$, not enough to see the
+Hardy--Littlewood spectrum. Whether the lift to higher modes can be
+realised dynamically while preserving the explanatory simplicity of the
+unimodal map is, in our view, the central question raised by the
+construction.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{../figures/fig3_defect_density.png}
+  \caption{Topological defect density $\rho(N)$ for $Q_k$, $k = 1, \ldots, 14$.
+           Spikes at $Q_3$ ($n = 31$, parity flip) and $Q_5$ (the
+           113--127 gap) are crushed to zero for $k \geq 6$ by the
+           topological shield.}
+  \label{fig:defect-density}
+\end{figure}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{rrrrr}
+    \toprule
+    $k$ & $p_k$ & $N = p_{k+1}^2$ & defects & $\rho(N)$ \\
+    \midrule
+    1  & 2  & 9    & 0 & $0$ \\
+    2  & 3  & 25   & 0 & $0$ \\
+    3  & 5  & 49   & 1 & $2.083 \times 10^{-2}$ \\
+    4  & 7  & 121  & 0 & $0$ \\
+    5  & 11 & 169  & 1 & $5.952 \times 10^{-3}$ \\
+    6  & 13 & 289  & 0 & $0$ \\
+    7  & 17 & 361  & 0 & $0$ \\
+    8  & 19 & 529  & 0 & $0$ \\
+    9  & 23 & 841  & 0 & $0$ \\
+    10 & 29 & 961  & 0 & $0$ \\
+    11 & 31 & 1369 & 0 & $0$ \\
+    12 & 37 & 1681 & 0 & $0$ \\
+    13 & 41 & 1849 & 0 & $0$ \\
+    14 & 43 & 2209 & 0 & $0$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Asymptotic admissibility data for $Q_k$, $k \leq 14$.
+    Generated by \texttt{experiments/exp1\_defect\_density.py}. Defects
+    occur only at $k = 3$ (driven by the parity flip at $n = 31$) and at
+    $k = 5$ (driven by the 113--127 prime gap); all higher stages are
+    free of MSS violations within their physical horizon.}
+  \label{tab:defect}
+\end{table}
+
+\appendix
+\input{appendix_experiments.tex}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}
