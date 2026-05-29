@@ -60,63 +60,43 @@ sub-quadratic admissibility verifiers.
 
 \section{Introduction}
 
-\subsection{AI-assisted numerical-heuristic discovery in mathematics}
-\label{ssec:ai-math}
+\subsection{Methodology: numerical experiments and rigorous core proofs}
+\label{ssec:methodology}
 
-A new methodology has crystallised in mathematical research over the
-past five years: the iterative interplay of large-scale numerical
-experiments, AI-assisted pattern discovery, and rigorous core proofs
-\cite{aidriven2024review,mathmachsurvey2024}. Davies et~al.\
-\cite{davies2021advancing} established the template by using machine
-learning to surface a previously unnoticed combinatorial identity in
-representation theory; the corresponding theorem was then proven by
-human collaborators. FunSearch \cite{romera2024funsearch} extended the
-template by letting a large language model evolve programs that
-generate constructive lower bounds in extremal combinatorics.
-AlphaGeometry~2 \cite{trinh2024alphageometry} demonstrated competitive
-olympiad-level synthetic reasoning. On the formalisation side,
-DeepSeek-Prover-V2 \cite{deepseekprover2025} and the Lean~4 ecosystem
-documented in Tao's lectures \cite{tao2025lean} have made the
-human--AI collaborative-proof loop a routine part of contemporary
-practice.
-
-Within this broader landscape, \emph{number theory has been a
-particularly fertile testbed}. The prime distribution is a domain
-where (i) high-precision data is essentially free, (ii) classical
-heuristics (Cram\'er, Hardy--Littlewood) make sharp quantitative
-predictions, and (iii) outstanding open problems
-(twin primes, Goldbach, Riemann) remain inaccessible to rigorous
-techniques. Recent independent works exploit precisely this
-combination: \cite{wang2026emergence} models primes as the symbolic
-dynamics of a one-dimensional unimodal map and recovers the
-twin-prime constant $C_2$; \cite{chaoticsieve2025} proposes a chaotic
-multidimensional sieve coupled with random-matrix predictions for
-prime gaps. These efforts share a common methodological signature:
-\emph{numerical-heuristic discovery}, in which large-scale
-experiments suggest exact dynamical structures, which are then
-isolated, audited, and either rigorously proven, refuted, or
-clearly conditioned on identifiable conjectures. The resulting
-papers are neither purely numerical nor purely formal: they are
-hybrids in which the role of computation is to focus the proof
-effort on the right structural lemma.
-
-The present paper is an independent contribution to this
-methodology. We do not extend or refine \cite{wang2026emergence};
-rather, we use it as a concrete vehicle through which to
-demonstrate what the numerical-heuristic methodology produces when
-applied with full mathematical rigour. The output is two
-unconditional theorems on the unimodal symbolic-dynamics model
-(Theorems~A and~B below), one structural decay theorem (Theorem~C),
-and a clean conditional reduction connecting recurrence in this
-dynamical system to a precise arithmetic shadowing problem
-(Section~\ref{sec:twin-pathway}). Most of these results were first
-\emph{noticed} through the experiments documented in
-Appendix~\ref{app:exp}; their proofs are independent of the
-experiments and stand on classical foundations
+This paper is the product of an iterative interplay between large-scale
+numerical experiments and rigorous proofs. The two structural results
+that drive the analysis (the Parity-Gap Lemma of Section~\ref{sec:parity-gap}
+and the parity-rigidity statement of Section~\ref{sec:markov}) were
+both first \emph{noticed} through Python computations: the Parity-Gap
+Lemma emerged from an exhaustive MSS-admissibility scan of the sieve
+words $W_k$ for $k \leq 5000$ (which produced exactly two defective
+stages, $Q_3$ and $Q_5$), and the parity rigidity emerged from a
+$5 \times 10^8$-iteration logistic orbit at $u_c$ in which odd gaps
+were observed to occur with empirical mass exactly zero. The proofs
+themselves are independent of the experiments and rely only on
+classical results from kneading theory and one-dimensional dynamics
 \cite{milnor1988iterated,misiurewicz1981absolutely,baladi2000positive}.
-We view the paper as a case study in how AI-assisted experimental
-exploration can isolate the structural pivots that make a rigorous
-theory possible.
+
+This methodological pattern --- numerical exploration to isolate the
+right structural lemma, followed by a proof on classical foundations
+--- is shared by a number of recent papers in arithmetic dynamics.
+Two contemporaneous works form the immediate context:
+\cite{wang2026emergence} models the prime distribution as the symbolic
+dynamics of a one-dimensional unimodal map and recovers the
+twin-prime constant $C_2$ via large-scale orbit simulations;
+\cite{chaoticsieve2025} couples a chaotic multidimensional sieve to
+random-matrix predictions for prime gaps. Both efforts use computer
+experiments to suggest dynamical relations that are then audited
+analytically. The present paper sits on the rigorous side of the same
+methodology: we use \cite{wang2026emergence} as a concrete vehicle
+through which to demonstrate what the experiment-then-prove approach
+produces in full mathematical rigour, yielding two unconditional
+theorems (Theorems~A and~B), one structural decay theorem
+conditioned on standard spectral lemmas (Theorem~C), and a clean
+conditional reduction linking dynamical recurrence to an arithmetic
+shadowing problem (Section~\ref{sec:twin-pathway}). All numerical
+verifications are collected in Appendix~\ref{app:exp}; no theorem
+statement depends on numerical evidence.
 
 \subsection{Primes and nonlinear dynamics}
 
@@ -939,13 +919,29 @@ The map $f_{u_c}$ is ergodic with respect to $\mu$
 to the indicator $\mathbf{1}_{I_{LRL}}$, for $\mu$-a.e.\ $x_0$,
 \[
     \frac{1}{N} \#\{ 0 \leq n \leq N : f_{u_c}^n(x_0) \in I_{LRL} \}
-    \xrightarrow[N \to \infty]{} \mu(I_{LRL}) > 0.
+    \xrightarrow[N \to \infty]{} \mu(I_{LRL}) =: \delta > 0.
 \]
 In particular the visit set
-$\mathcal{N}(x_0) = \{ n : f_{u_c}^n(x_0) \in I_{LRL}\}$ has positive
-lower density, hence is infinite, and divergence of
-$\sum_{n \in \mathcal{N}} 1/(\log n)^2$ follows from
-Lemma~\ref{lem:divergent-envelope}.
+$\mathcal{N}(x_0) = \{ n : f_{u_c}^n(x_0) \in I_{LRL}\}$ has lower
+density at least $\delta$, hence is infinite. To deduce the divergence
+of $\sum_{n \in \mathcal{N}(x_0)} (\log n)^{-2}$, fix any
+$\varepsilon \in (0, \delta)$. By the Birkhoff convergence above, for
+$\mu$-a.e.\ $x_0$ there exists $N_0(x_0)$ such that for all $T \geq N_0$,
+$|\mathcal{N}(x_0) \cap [N_0, T]| \geq (\delta - \varepsilon)(T - N_0)$.
+Since $(\log n)^{-2}$ is decreasing in $n$, summing over the visit
+times in $[N_0, T]$ in increasing order gives
+\[
+    \sum_{n \in \mathcal{N}(x_0) \cap [N_0, T]} \frac{1}{(\log n)^2}
+    \;\geq\; \frac{|\mathcal{N}(x_0) \cap [N_0, T]|}{(\log T)^2}
+    \;\geq\; \frac{(\delta - \varepsilon)(T - N_0)}{(\log T)^2}.
+\]
+The right-hand side tends to $+\infty$ as $T \to \infty$ because
+$T / (\log T)^2 \to \infty$, hence the full sum
+$\sum_{n \in \mathcal{N}(x_0)} (\log n)^{-2}$ diverges $\mu$-almost
+surely. (Lemma~\ref{lem:divergent-envelope} provides the corresponding
+deterministic divergence of $\int_2^\infty \delta / (\log t)^2 \, dt$,
+which is consistent with --- but not directly used in --- the above
+argument.)
 \end{proof}
 
 \begin{remark}[Non-autonomous extension]
@@ -963,36 +959,65 @@ the non-autonomous version of \cite{wang2026emergence} should rest.
 
 The remaining step is the bridge from dynamics to arithmetic. This is
 exactly Open Problem~1 (arithmetic shadowing) of
-Section~\ref{sec:discussion}, restated in the form needed here:
+Section~\ref{sec:discussion}, restated in the form needed here.
 
-\begin{conjecture}[Arithmetic shadowing for twin primes]
-\label{conj:arith-shadow-twin}
-There exists a positive density of horizons $N$ such that, for any orbit
-of $f_{u_c}$ that visits $I_{LRL}$ at symbolic time $n \leq N$, the
-arithmetic position of the visit corresponds (under the
-non-autonomous embedding $n \mapsto p_n$) to a true twin-prime pair
-$(p, p+2)$ with $p \leq N \log N$.
+Let $\pi : \mathbb{N} \to \mathcal{P}$ denote the prime-enumeration
+embedding $\pi(n) = p_n$ (the $n$-th prime, $p_1 = 2, p_2 = 3, \ldots$),
+and recall that $\mathcal{N}(x_0) = \{ n \geq 0 : f_{u_c}^n(x_0) \in I_{LRL}\}$
+is the symbolic visit set introduced in
+Theorem~\ref{thm:dynamical-recurrence}.
+
+\begin{conjecture}[Arithmetic shadowing for the L-R-L cylinder]
+\label{conj:arith-shadow-LRL}
+For $\mu$-almost every $x_0$, the set
+\[
+    \mathcal{T}(x_0) := \{ n \in \mathcal{N}(x_0) :\
+        \pi(n) \text{ and } \pi(n) + 2 \text{ are both prime} \}
+\]
+has positive lower density in $\mathcal{N}(x_0)$, i.e.,
+\[
+    \liminf_{N \to \infty}
+    \frac{|\mathcal{T}(x_0) \cap [0, N]|}{|\mathcal{N}(x_0) \cap [0, N]|}
+    \;\geq\; c
+\]
+for some constant $c > 0$ that may depend on $x_0$ but is bounded
+below uniformly on a $\mu$-positive set.
 \end{conjecture}
 
-The conjecture is a quantitative version of the qualitative shadowing
-hypothesis already implicit in \cite{wang2026emergence}: it asks for a
-density-one rather than $\mu$-almost-sure correspondence. Under it,
-Theorem~\ref{thm:dynamical-recurrence} immediately implies arithmetic
-recurrence:
+The conjecture asserts a \emph{positive correlation} between the
+dynamical visit set $\mathcal{N}(x_0)$ and the arithmetic twin-prime
+set $\{n : (\pi(n), \pi(n)+2) \in \mathcal{P}^2\}$. It is a strict
+strengthening of the twin prime conjecture (which only requires
+$\mathcal{T}(x_0) \neq \emptyset$ for some $x_0$, not positive density)
+and is morally analogous to a Bowen-style shadowing statement: the
+unimodal orbit of $x_0$ "shadows" the arithmetic prime sequence in the
+sense that visits to the L-R-L cylinder occur (with positive
+frequency) precisely at indices where the arithmetic embedding lands
+at a twin-prime pair. The non-autonomous schedule of
+\cite{wang2026emergence} provides a heuristic mechanism for this
+correlation: the parameter drift $u_n \to u_c$ at logarithmic rate
+matches the prime-density envelope $1/\log n$, suggesting that the
+two sequences become asymptotically synchronised. We do not, however,
+have a proof that this heuristic synchronisation lifts to a positive
+lower density.
 
 \begin{corollary}[Infinite recurrence of arithmetic L-R-L constellations]
 \label{cor:twin-conditional}
-Under Conjecture~\ref{conj:arith-shadow-twin} (arithmetic shadowing),
-there exist infinitely many integer L-R-L constellations, i.e.\
-infinitely many integer positions $n$ such that the unimodal symbolic
-itinerary at time $n$ corresponds to a pair of primes at separation
-$g = 2$.
+Under Conjecture~\ref{conj:arith-shadow-LRL}, the set
+$\mathcal{T}(x_0)$ is infinite for $\mu$-almost every $x_0$.
+Equivalently, the prime sequence contains infinitely many pairs
+$(p_n, p_n + 2)$ at symbolic times $n$ where the unimodal itinerary
+visits the L-R-L cylinder, hence in particular infinitely many twin
+primes.
 \end{corollary}
 \begin{proof}
-Theorem~\ref{thm:dynamical-recurrence} gives infinitely many symbolic
-visits to $I_{LRL}$. Conjecture~\ref{conj:arith-shadow-twin} maps a
-positive density of these to genuine integer prime pairs at separation
-$2$. Hence the set of such arithmetic configurations is infinite.
+By Theorem~\ref{thm:dynamical-recurrence}, $\mathcal{N}(x_0)$ has
+positive lower density in $\mathbb{N}$, so
+$|\mathcal{N}(x_0) \cap [0, N]| \to \infty$. Conjecture~\ref{conj:arith-shadow-LRL}
+gives $|\mathcal{T}(x_0) \cap [0, N]| \geq c \cdot |\mathcal{N}(x_0) \cap [0, N]|$
+for $N$ large, hence $|\mathcal{T}(x_0)| = \infty$. Each $n \in \mathcal{T}(x_0)$
+contributes a twin-prime pair $(\pi(n), \pi(n)+2)$, and distinct $n$
+give distinct primes since $\pi$ is injective.
 \end{proof}
 
 We emphasise the conditioning chain. Lemmas
@@ -1000,7 +1025,7 @@ We emphasise the conditioning chain. Lemmas
 unconditional. Theorem~\ref{thm:dynamical-recurrence} is rigorous
 in the autonomous case. The whole quantitative force of the
 conditional recurrence statement therefore lies in
-Conjecture~\ref{conj:arith-shadow-twin}, i.e.\ in the arithmetic
+Conjecture~\ref{conj:arith-shadow-LRL}, i.e.\ in the arithmetic
 shadowing problem already raised as Open Problem~1. The contribution
 of this section is to make explicit that the recurrence of integer
 L-R-L constellations \emph{reduces} to arithmetic shadowing on a
@@ -1012,7 +1037,7 @@ tractable proof; we have no opinion on which problem is harder.
 \begin{remark}
 \label{rem:over-claim}
 Corollary~\ref{cor:twin-conditional} should not be read as resolving
-any classical conjecture. Conjecture~\ref{conj:arith-shadow-twin} is a
+any classical conjecture. Conjecture~\ref{conj:arith-shadow-LRL} is a
 strong arithmetic statement that does not currently follow from any
 known shadowing lemma; the standard Bowen shadowing lemma requires
 uniform hyperbolicity, which fails at the critical point of the

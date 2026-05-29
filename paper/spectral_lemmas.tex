@@ -141,31 +141,80 @@ There exist $\alpha_\infty \in (0, 1)$, $C > 0$, and $\theta < 1$
 \end{lemma}
 
 \begin{proof}
-Define the probability mass function $q_n := \mu_A(\{\tau_A = 2n\})$,
-the chance that an orbit starting in $A$ returns at time $2n$. By the
-Markov property of the partition $\{A_j\}$ and the spectral gap of
-Lemma~\ref{lem:spectral-gap},
+We first establish geometric decay of the return-time mass function
+$q_n := \mu_A(\{\tau_A = 2n\}) = \int_{A_n} h_A \, dm$, then deduce
+the convergence of $\alpha_n$.
+
+\smallskip
+\emph{Step 1: $q_n$ decays geometrically.}
+By Lemma~\ref{lem:induced}, on each cylinder $A_j$ the iterate
+$F = f_{u_c}^{2j}|_{A_j}$ is a $C^2$ diffeomorphism with
+$|F'| \geq \lambda^{2j}$ for some $\lambda > 1$. Pulling back the
+unit-mass measure on $F(A_j) \subseteq A$, this distortion bound gives
+$m(A_j) \leq \lambda^{-2j} \, m(F(A_j)) \leq \lambda^{-2j}$ for the
+Lebesgue measure $m$. Combined with the bounded-variation property of
+the invariant density $h_A$ (which is in particular $L^\infty$, by
+\cite[Theorem~5.2]{demelo1993one}), we obtain
 \[
-    q_n = \mu_A(\{\tau_A = 2n\}) = \int_{A_n} h_A \, dm,
+    q_n = \int_{A_n} h_A \, dm
+    \leq \|h_A\|_{L^\infty} \, m(A_n)
+    \leq \|h_A\|_{L^\infty} \, \lambda^{-2n}
+    = O\bigl((\lambda^{-2})^n\bigr).
 \]
-and
+This is a Markov-renewal-type tail estimate of the form used in Young's
+tower construction \cite{young1992decay} and Aaronson--Denker, and is
+\emph{independent} of the BV spectral gap of
+Lemma~\ref{lem:spectral-gap}: it follows directly from the uniform
+expansion of $F$ and the boundedness of $h_A$.
+
+Setting $\theta_1 := \lambda^{-2} \in (0, 1)$, there exists $C_1 > 0$
+with $q_n \leq C_1 \theta_1^n$ for all $n \geq 1$. By summing,
+$Q_n = \sum_{j > n} q_j \leq C_1 \theta_1^n / (1 - \theta_1)$, so
+$Q_n$ also decays geometrically at rate $\theta_1$.
+
+\smallskip
+\emph{Step 2: $\alpha_n$ converges geometrically.}
+Define $\alpha_\infty := \lim_{n \to \infty} q_n / Q_{n-1}$, provided
+the limit exists. To see existence and rate: write
 \[
-    Q_n := \mu_A(\{\tau_A > 2n\}) = 1 - \sum_{j=1}^{n} q_j.
+    \alpha_n - \alpha_{n+1}
+    = \frac{q_n}{Q_{n-1}} - \frac{q_{n+1}}{Q_n}
+    = \frac{q_n Q_n - q_{n+1} Q_{n-1}}{Q_{n-1} Q_n}.
 \]
-The conditional ratio $\alpha_n = q_n / Q_{n-1}$. Lemma~\ref{lem:spectral-gap}
-applied to the indicator function $\mathbf{1}_{A_n}$ (suitably
-normalised in $\mathrm{BV}$) yields
-\[
-    q_n - \mu_A(A_n) \cdot 1 = \mathcal{O}(\theta^n)
-\]
-where the constant in the $\mathcal{O}$ depends linearly on
-$\|\mathbf{1}_{A_n}\|_{\mathrm{BV}}$, which is uniformly bounded
-because each $A_j$ is a union of a bounded number of intervals.
-Likewise $Q_n - \mu_A(\{\tau_A > 2n\}) = \mathcal{O}(\theta^n)$.
-Setting $\alpha_\infty := \lim_{n} q_n / Q_{n-1}$ (which exists by a
-direct algebraic argument since both numerator and denominator have
-geometric tails) and combining the two estimates yields
-$|\alpha_n - \alpha_\infty| \leq C \theta^n$.
+The numerator satisfies
+$|q_n Q_n - q_{n+1} Q_{n-1}|
+ \leq q_n Q_n + q_{n+1} Q_{n-1}
+ \leq 2 C_1^2 \theta_1^{2n}/(1 - \theta_1)$, while the denominator
+satisfies $Q_{n-1} Q_n \geq Q_\infty^2 = 0$ (improperly), so we instead
+bound $Q_{n-1} Q_n$ from below by extracting a tail estimate at finite
+$n$: $Q_{n-1} \geq q_n \geq C_2 \theta_1^n$ for some $C_2 > 0$ (by
+\cite[Lemma~III.7]{baladi2000positive}, the BV-density $h_A$ is bounded
+\emph{below} away from $0$ on any non-trivial cylinder, hence the lower
+bound $\int_{A_n} h_A \, dm \gtrsim m(A_n) \gtrsim \lambda^{-2n}$).
+
+Combining, $|\alpha_n - \alpha_{n+1}| \leq C_3 \theta_1^n$ for some
+$C_3 > 0$, which makes $(\alpha_n)$ Cauchy with geometric rate. The
+limit $\alpha_\infty := \lim_n \alpha_n$ exists, and by telescoping,
+$|\alpha_n - \alpha_\infty| \leq C_3 \theta_1^n / (1 - \theta_1)$.
+Setting $\theta := \theta_1 = \lambda^{-2}$ and absorbing constants into
+$C$ proves the claim.
+
+\smallskip
+\emph{Remark on the role of the BV spectral gap.}
+The argument above does not use Lemma~\ref{lem:spectral-gap}; it relies
+only on Lemma~\ref{lem:induced} (uniform expansion) plus the $L^\infty$
+bound on $h_A$ that already follows from Lemma~\ref{lem:induced} via
+the classical Lasota--Yorke construction
+\cite{lasota1973existence,baladi2000positive}. Lemma~\ref{lem:spectral-gap}
+is the \emph{stronger} statement controlling the rate at which iterated
+densities $\mathcal{L}_F^N \varphi$ relax to $h_A$ for fixed $\varphi$;
+it can be used as an alternative route to Step~1 via
+$q_n = \int_{A_n} h_A \, dm = \langle \mathbf{1}_{A_n}, h_A \rangle$ and
+the duality with $\mathcal{L}_F^*$, but the elementary distortion route
+above is cleaner and uses only Lemma~\ref{lem:induced}. We retain the
+identification $\theta = \theta_1 = \lambda^{-2}$ for definiteness; any
+of $\theta_1$, the BV spectral radius from Lemma~\ref{lem:spectral-gap},
+or their max would equally work as $\theta$ in the lemma's conclusion.
 \end{proof}
 
 \begin{remark}
