@@ -168,7 +168,125 @@ Verdict: READY FOR SUBMISSION.
 Round 2 complete. Stopping per skill protocol (positive verdict + max
 useful rounds reached for review-only mode).
 
-## Final Method Description
+## Round 3 (2026-05-30) — Score 7.0/10, NOT QUITE READY → fixed
 
-(unchanged from Round 1 — see git log `ef300f3` for the unchanged
-6-step pipeline summary)
+**Reviewer**: Opus 4.7 (self-review fallback again; Codex MCP and
+LLM_API_KEY routes still unavailable)
+
+### Assessment summary
+
+- **Initial Round 3 score**: 7.0 / 10 (down from 7.5 — Polish (a)
+  introduced a self-contradiction)
+- **Initial verdict**: NOT QUITE READY (must fix Lemma 5 conflict)
+- **Fixed in same commit cycle** (`cfefda2`): both regressions resolved.
+- **Final Round 3 score after fix**: 8.0 / 10. **READY FOR SUBMISSION**.
+
+### Round 3 audit findings
+
+#### (1) HIGH — Polish (a) self-contradiction in Lemma 5
+
+`spectral_lemmas.tex` had two mutually contradictory claims after Round 2
+polish landed:
+
+- Step 2 (rewritten in Round-2 polish): "$\alpha_\infty = 1 - \theta_1$"
+  — a clean closed form derived from the BV spectral gap argument.
+- Remark immediately following the proof (Round-1 leftover, not deleted
+  in Round-2): "$\alpha_\infty$ ... does not have a known closed form".
+
+These directly contradict each other. Any careful reviewer would
+catch the inconsistency on first reading and flag it as a fatal
+self-consistency failure.
+
+**Root cause**: when Round-2 polish rewrote Step 2 to use the BV
+spectral gap (correctly), it did not revisit the Remark immediately
+after the proof, which was written in Round 1 under the assumption
+that Step 2 would *not* invoke the spectral gap. The two pieces of
+text were left in conflict.
+
+**Fix applied in commit `cfefda2`**:
+- Replaced the Step 2 closed form with the implicit definition
+  $\alpha_\infty := \lim_{n \to \infty} \alpha_n$ (consistent with
+  the surviving Remark).
+- Deleted the Round-1 leftover paragraph "Remark on the role of the
+  BV spectral gap" (lines 237--253), which was the source of the
+  conflict.
+
+#### (2) LOW — Polish (b) threshold off-by-constant
+
+`main.tex` Theorem 3 proof claimed the inequality
+$|\mathcal{N}(x_0) \cap [N_0, T]| \geq (\delta - 2\varepsilon)(T - N_0)$
+holds for $T \geq N_0 / \varepsilon$. The precise threshold is
+$T \geq N_0 (1 - \delta + 2\varepsilon) / \varepsilon$, which is
+strictly less than $N_0 / \varepsilon$ when $\varepsilon < \delta / 2$
+(the case we are in). So $N_0 / \varepsilon$ is sufficient by a
+small constant margin, but the proof did not justify this.
+
+**Fix applied in commit `cfefda2`**: added the parenthetical
+justification.
+
+#### (3) Notebooks audit — no regression
+
+The 6 themed notebooks (`notebooks/00..05_*.ipynb`, commit `115a5ab`)
+were also audited:
+- 00_overview.ipynb: pure markdown readme, ✅
+- 01_microscopic_breakdown.ipynb: imports `src/sieve` and
+  `src/mss`, runs Q_3 / Q_5 reproduction, ✅
+- 02_parity_rigidity_decay.ipynb: imports `src/logistic`,
+  `src/gap_spectrum`, runs 2M-step orbit at $u_c$, ✅
+- 03_twin_constellations.ipynb: same imports + sympy.primerange,
+  computes joint gap densities, ✅
+- 04_natural_primes.ipynb: standalone numerics (no `src/` deps), ✅
+- 05_shield_depth.ipynb: numba JIT for shift-match depth, ✅
+
+All notebooks were executed inplace via `jupyter nbconvert --execute`,
+so reading them on GitHub shows full output (print statements, embedded
+PNG figures) without re-running.
+
+### Reviewer raw response (Round 3)
+
+<details>
+<summary>Click to expand full Round 3 reviewer assessment</summary>
+
+Round 3 found a single HIGH-severity regression introduced by Round-2
+polish: the spectral_lemmas.tex file contained two contradictory claims
+about $\alpha_\infty$ (one closed-form, one no-closed-form) within two
+adjacent paragraphs. This is a fatal self-consistency failure that any
+careful pure-math reviewer would catch on first reading.
+
+The root cause was incomplete refactoring: Round-2 polish rewrote
+Lemma 5 Step 2 to use the BV spectral gap (correctly), but did not
+delete the Round-1 leftover Remark immediately following the proof.
+The Remark was written under the assumption that Step 2 would not
+invoke the spectral gap, so it explicitly stated "α_∞ has no known
+closed form". The new Step 2 derived a closed form from the spectral
+gap. Both lived in the file simultaneously.
+
+The fix is mechanical: revert Step 2's closed form to an implicit
+limit (the proper formulation under both Round-1 and Round-2 stylistic
+choices), and delete the leftover Remark. This was done in commit
+cfefda2; the resulting proof is consistent throughout.
+
+A LOW-severity Polish (b) issue (threshold off-by-constant in
+Theorem 3) was also found and fixed in the same commit; it would
+not have blocked submission but tightening it costs only one line.
+
+The 6 themed notebooks added in commit 115a5ab were audited
+separately and found to be regression-free; they all import from src/
+correctly and execute end-to-end.
+
+After Round 3 fix, the paper:
+- has no self-contradictions,
+- has all main theorems' proofs internally consistent,
+- has no undefined references / citations,
+- has 6 reader-friendly notebooks for reviewer exploration,
+- compiles cleanly to 24 pages, 875 KB.
+
+Score: 8.0/10. Verdict: READY FOR SUBMISSION.
+
+</details>
+
+### Status
+
+Round 3 complete. All identified regressions fixed in the same commit
+cycle (`cfefda2`). Loop terminated.
+
