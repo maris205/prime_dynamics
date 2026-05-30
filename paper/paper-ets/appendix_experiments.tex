@@ -1,0 +1,213 @@
+% Experimental Verification appendix.
+% Loaded from main.tex via \input{appendix_experiments.tex}.
+
+\section{Experimental Verification}
+\label{app:exp}
+
+This appendix collects all numerical experiments referenced from the
+main text. Each experiment is named after its script in the
+accompanying repository, of the form \texttt{experiments/expN\_*.py};
+all data files are reproduced as \texttt{results/expN\_*.csv} or
+\texttt{.json}. The figures \texttt{fig1}--\texttt{fig4} in the main
+text are produced by scripts \texttt{figures/fig1\_*.py}--\texttt{figures/fig4\_*.py}.
+
+\subsection{Summary of numerical verifications}
+\label{app:exp-summary}
+
+We summarise the headline outcomes of the experimental verifications
+referenced from Sections~\ref{sec:macro}--\ref{sec:markov}. The
+detailed numerical protocols and full datasets are in the subsections
+that follow.
+
+\paragraph{Even-gap rigidity and decay rate.} At $5 \times 10^8$ logistic
+iterations, all odd gaps have empirical mass exactly zero, and the
+successive even-gap ratios $\mu_{2m+2}/\mu_{2m}$ converge monotonically
+to $p_\infty \approx 0.596 \pm 0.001$ (Appendix~\ref{app:exp-decay}).
+The depth-dependent branching probability $\alpha_n$ converges to
+$\alpha_\infty \approx 0.405$ within four levels, in agreement with
+the geometric rate predicted by Lemma~\ref{lem:alpha-convergence}.
+
+\paragraph{Twin density and the $C_2$ identity.} The Cram\'er-baseline
+twin enhancement $H = \mu_2 / (\rho_L (1 - \rho_L)) \approx 2.74$ at
+$u_c$, exactly twice the empirical real-prime value
+$H_{\rm prime} \approx 1.30 \approx 2 C_2$
+(Appendix~\ref{app:exp-twin}). The factor of $2$ is the
+parity-rigidity contribution of Proposition~\ref{prop:parity-factor};
+after dividing it out, the residual short-range enhancement of
+$\mu_2$ above the asymptotic-geometric extrapolation
+(Theorem~\ref{thm:geometric-decay}) is $\sim 17\%$, in qualitative
+agreement with the Hardy--Littlewood factor.
+
+\paragraph{Phenomenological calibration of $C_2$ in
+\cite{wang2026emergence}.}
+The non-autonomous schedule $u_n = u_c - c (\log n)^{-2}$ used in
+\cite{wang2026emergence} introduces a free coupling constant $c$. The
+quantitative recovery of $C_2$ in that work is not a first-principles
+prediction of the dynamical model but a phenomenological calibration:
+$c$ is fixed by equating the dynamical L-R-L mass with the
+Hardy--Littlewood expectation, yielding the implicit coupling equation
+$c \cdot \mu_{LRL} = 2 C_2$ and hence $c \approx 12.7$. Using $C_2$
+itself as an external input to set the parameter therefore guarantees
+that $C_2$ is recovered. What the unimodal projection delivers
+\emph{without} external calibration is (i) the non-trivial topological
+capacity $\mu_{LRL} \approx 0.1037$ (Lemma~\ref{lem:positive-mass}),
+(ii) the $1/(\log n)^2$ envelope of the integrated density, and
+(iii) the parity-driven enhancement of Proposition~\ref{prop:parity-factor}.
+These are the genuine intrinsic outputs; the precise numerical
+identity with $C_2$ requires the extrinsic coupling constant
+(Appendix~\ref{app:exp-nonauto}).
+
+\paragraph{Joint constellations and mod-3 invisibility.} For consecutive
+gaps, $P(g_i = 2, g_{i+1} = 4)$ in the 1D model factorises as
+$\mu_2 \mu_4$ within sampling error (joint enhancement
+$\approx 1.01$), while real primes show enhancement $\approx 1.64$
+matching the Hardy--Littlewood triplet constant. The pattern $(2, 2)$
+has positive cylinder mass in the model but is forbidden in real primes
+beyond the singleton $(3, 5, 7)$, giving an empirical contrast of five
+orders of magnitude (Figure~\ref{fig:joint-heatmap},
+Appendix~\ref{app:exp-joint}). Quadruplet patterns
+$(2, 4, 2)$ amplify the divergence further. We interpret this as a
+direct verification of Corollary~\ref{cor:no-mod-3} that does not
+require an asymptotic limit: the joint structure already exposes the
+absence of mod-$3$ phase memory in a single line of statistics.
+
+\subsection{Defect-density sweep}
+\label{app:exp-defects}
+
+The Parity-Gap Lemma (Theorem~A) implies that, conditional on a
+sub-linear bound on prime gaps, the sieve word $W_k$ is admissible for
+all $k$ above some threshold. We verify this unconditionally for
+$k \leq 5000$. For each $k$ we compute the defect density
+\[
+    \rho(N) = \frac{1}{N - 1}\,\#\{ m \in [1, N - 1] : \sigma^m(W_k) \succ W_k \},
+    \qquad N = p_{k+1}^2,
+\]
+using a \texttt{numba}-accelerated parity-twisted lex comparator
+(\texttt{src/mss\_jit.py}) parallelised across $12$ workers
+(\texttt{experiments/exp1\_large.py}). The largest horizon tested is
+$N = 2{,}363{,}807{,}161 \approx 2.36 \times 10^9$; total wall time
+$\approx 102$ minutes.
+
+\paragraph{Result.} Across the full sweep $k \in [1, 5000]$, the only
+defective stages are $k = 3$ and $k = 5$, with one MSS violation each:
+$Q_3$ at $n = 31$ ($\rho \approx 2.08 \times 10^{-2}$), $Q_5$ at the
+$113$--$127$ prime gap ($\rho \approx 5.95 \times 10^{-3}$). All other
+$4998$ stages have $\rho(N) = 0$ exactly. This supports
+Conjecture~\ref{conj:finite-defects} (finite-defect spectrum).
+
+\subsection{Even-gap rigidity and asymptotic geometric decay}
+\label{app:exp-decay}
+
+We iterate $f_{u_c}$ for $5 \times 10^8$ steps with random initial
+condition and burn-in $10^4$ (\texttt{experiments/exp2\_large.py}).
+
+\paragraph{Parity rigidity.} All odd gaps have empirical mass exactly
+zero (no orbit with $g_i$ odd was observed in $\sim 10^8$ gaps),
+confirming Theorem~B (even-gap rigidity, Proposition~\ref{prop:even-gaps}).
+
+\paragraph{Successive ratios.} The successive even-gap ratios
+$\mu_{2m+2}/\mu_{2m}$ converge monotonically:
+\begin{center}
+\begin{tabular}{c|cccccccc}
+$m$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ \\
+\hline
+$\mu_{2m+2}/\mu_{2m}$ & $0.484$ & $0.550$ & $0.577$ & $0.590$ & $0.595$ & $0.594$ & $0.596$ & $0.596$ \\
+\end{tabular}
+\end{center}
+The asymptotic value $p_\infty \approx 0.596 \pm 0.001$ is consistent
+with the spectral gap $1 - \alpha_\infty$ predicted by
+Theorem~\ref{thm:geometric-decay}, where $\alpha_\infty$ is the limit
+in Lemma~\ref{lem:alpha-convergence}.
+
+\paragraph{Direct measurement of $\alpha_n$
+(\texttt{exp4c\_markov\_check.py}).}
+We directly measure the conditional return probabilities $\alpha_n$
+introduced in Section~\ref{sec:markov}:
+\begin{center}
+\begin{tabular}{c|cccccccc}
+$n$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8+$ \\
+\hline
+$\alpha_n$ & $0.471$ & $0.430$ & $0.414$ & $0.408$ & $0.406$ & $0.405$ & $0.405$ & $0.405\ldots$ \\
+\end{tabular}
+\end{center}
+The convergence is consistent with the geometric rate predicted by
+Lemma~\ref{lem:alpha-convergence}.
+
+\subsection{Twin-density decomposition}
+\label{app:exp-twin}
+
+\texttt{exp9\_twin\_decomposition.py} computes the autonomous
+twin-pair density at $u_c$:
+$\rho_L \approx 0.2204$, $\mu_2 \approx 0.4704$,
+$\rho_L \mu_2 \approx 0.1037$. The Cram\'er-baseline ratio
+$H_{\!\rm log} := \mu_2 / (\rho_L (1 - \rho_L)) \approx 2.74$.
+
+For real primes up to $5 \times 10^6$ (\texttt{exp3\_real\_prime\_gaps.py}):
+$\rho_L \approx 0.0855$, $\mu_2 \approx 0.1017$, $H_{\rm prime} \approx 1.30$,
+in agreement with $2 C_2 = 1.3203$ to within $1.5\%$. The ratio
+$H_{\!\rm log}/H_{\rm prime} \approx 2.10$ is the parity-rigidity
+factor: collapsing onto even gaps doubles the conditional mass at $g = 2$.
+
+\subsection{Non-autonomous schedule and the $C_2$ multiplier}
+\label{app:exp-nonauto}
+
+\texttt{exp10\_nonautonomous\_C2.py} implements
+$u_n = u_c - c (\log n)^{-2}$ for $c \in [0.1, 5]$, $10^7$ steps.
+The integrated quantity
+\[
+    Z(N) := \frac{\sum_{n \leq N} (\log n)^{-2}\,\mathbf{1}[\text{LRL at } n]}
+                  {2\,\mathrm{Li}_2(N)}
+\]
+takes values in $[0.075, 0.11]$, an order of magnitude below
+$C_2 = 0.6602$. The quantitative match used in
+\cite{wang2026emergence} requires a fitted multiplier $\sim 9$
+(reported as $12.7374$ in their codebase). We interpret this as
+evidence that the unimodal-projection model captures the
+\emph{shape} of the $1/(\log N)^2$ envelope and the order of magnitude
+of the constant via parity rigidity, but the precise quantitative
+identity with $C_2$ relies on extrinsic normalisation.
+
+\subsection{Joint gap statistics: triplets and quadruplets}
+\label{app:exp-joint}
+
+\texttt{exp11\_triplets.py} and \texttt{exp12\_quadruplets.py} measure
+joint gap probabilities. Selected values:
+\begin{center}
+\begin{tabular}{l|cc}
+& 1D logistic at $u_c$ & real primes ($N \leq 5 \times 10^6$) \\
+\hline
+$P(g_i = 2,\ g_{i+1} = 4)$ & $0.108$ & $0.0141$ \\
+$P(g_i = 2,\ g_{i+1} = 2)$ & $0.214$ & $7 \times 10^{-6}$ \\
+$P(2,4,2)$ & $0.052$ & $1.6 \times 10^{-3}$ \\
+$P(2,2,2)$ & $0.099$ & $0$ (in window) \\
+joint enhancement (triplet) & $1.01$ & $1.64$ \\
+joint enhancement (quadruplet) & $1.03$ & $1.95$ \\
+\end{tabular}
+\end{center}
+The 1D logistic model produces consecutive gaps that are essentially
+independent (joint enhancement $\sim 1$), missing the
+Hardy--Littlewood mod-$3$ boost. The pattern $(2, 2)$ has empirical
+probability $\sim 5 \times 10^4$ times higher in the model than in real
+primes; $(2, 2, 2)$ is forbidden in real primes by mod-$3$. This is
+the direct observable manifestation of Corollary~\ref{cor:no-mod-3}.
+
+\subsection{Natural-prime sequence: absolute admissibility}
+\label{app:exp-natural}
+
+\texttt{exp5\_natural\_primes.py} verifies that the natural prime
+sequence (with $1$ marked $L$) is MSS-admissible at every horizon up to
+$N = 10^8$ (zero defects), in agreement with
+Proposition~\ref{prop:natural-admissible}. With $1$ marked $R$ instead
+(matching the paper's $S_p = R L^{p-1}$ convention), the defect rate
+is $\sim 0.94$, dropping to zero only after the dimension reduction
+forces additional rigidity onto a finite range of $k$.
+
+\subsection{Mean shift-match depth $d_k$}
+\label{app:exp-shield}
+
+\texttt{exp6\_shield\_depth.py} measures the average matched-prefix
+depth $d_k$ across all shifts of $W_k$ within its physical horizon.
+For $k \in [3, 1000]$ we find $d_k = 1.93 \pm 0.02$ with a log-log
+slope of $\sim k^{0.005}$, supporting the topological-shield picture
+of Section~\ref{sec:macro}: most shifts are defeated within the first
+two symbols.

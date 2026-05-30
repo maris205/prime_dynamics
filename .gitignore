@@ -31,3 +31,6 @@ prime_logistic/
 # Heavy raw data and notebooks not needed in repo
 data/
 *.aux.log
+
+# Temp unzip directory (template files extracted to paper-ets/)
+paper/ETS-template/
