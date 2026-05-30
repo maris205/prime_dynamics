@@ -41,7 +41,7 @@ the breakdown is driven by parity inversion, not by gap size. We then
 prove a sharper structural result, the \emph{Parity-Gap Lemma}, which
 reduces topological admissibility of $W_k = Q_k[0, p_{k+1}^2)$ to an
 extremal prime-gap inequality $G(p_{k+1}^2) < p_{k+1} - 1$. Classical
-bounds such as Legendre's, Andrica's, and the Riemann Hypothesis yield
+bounds such as Legendre's, Andrica's \cite{andrica1986conjecture}, and the Riemann Hypothesis yield
 maximal gaps at $x = p^2$ that asymptotically exceed the topological
 shield $p - 1$, and are therefore mathematically insufficient to
 guarantee admissibility. Only a strongly sub-root bound, such as
@@ -459,7 +459,7 @@ Several standard hypotheses on the size of $G(N)$ yield, when evaluated
 at the physical horizon $x = p_{k+1}^2$, bounds that are
 asymptotically larger than the topological shield $p_{k+1} - 1$:
 \begin{itemize}
-\item Andrica's / Legendre's conjecture: $G(x) \leq C \sqrt{x}$ gives
+\item Andrica's / Legendre's conjecture \cite{andrica1986conjecture}: $G(x) \leq C \sqrt{x}$ gives
       $G(p_{k+1}^2) \leq C p_{k+1}$, larger than $p_{k+1} - 1$ by a
       multiplicative constant;
 \item Riemann Hypothesis: $G(x) = O(\sqrt{x} \log x)$ gives
@@ -893,15 +893,22 @@ In particular the visit set
 $\mathcal{N}(x_0) = \{ n : f_{u_c}^n(x_0) \in I_{LRL}\}$ has lower
 density at least $\delta$, hence is infinite. To deduce the divergence
 of $\sum_{n \in \mathcal{N}(x_0)} (\log n)^{-2}$, fix any
-$\varepsilon \in (0, \delta)$. By the Birkhoff convergence above, for
-$\mu$-a.e.\ $x_0$ there exists $N_0(x_0)$ such that for all $T \geq N_0$,
-$|\mathcal{N}(x_0) \cap [N_0, T]| \geq (\delta - \varepsilon)(T - N_0)$.
+$\varepsilon \in (0, \delta/2)$. By the Birkhoff convergence above,
+for $\mu$-a.e.\ $x_0$ there exists $N_0 = N_0(x_0)$ such that
+$|\mathcal{N}(x_0) \cap [0, T]| \geq (\delta - \varepsilon) T$ for all
+$T \geq N_0$; subtracting $N_0$ from the count over $[0, N_0]$ gives
+\[
+    |\mathcal{N}(x_0) \cap [N_0, T]|
+    \;\geq\; (\delta - \varepsilon) T - N_0
+    \;\geq\; (\delta - 2\varepsilon)(T - N_0)
+\]
+for all $T$ sufficiently large (specifically, $T \geq N_0 / \varepsilon$).
 Since $(\log n)^{-2}$ is decreasing in $n$, summing over the visit
 times in $[N_0, T]$ in increasing order gives
 \[
     \sum_{n \in \mathcal{N}(x_0) \cap [N_0, T]} \frac{1}{(\log n)^2}
     \;\geq\; \frac{|\mathcal{N}(x_0) \cap [N_0, T]|}{(\log T)^2}
-    \;\geq\; \frac{(\delta - \varepsilon)(T - N_0)}{(\log T)^2}.
+    \;\geq\; \frac{(\delta - 2\varepsilon)(T - N_0)}{(\log T)^2}.
 \]
 The right-hand side tends to $+\infty$ as $T \to \infty$ because
 $T / (\log T)^2 \to \infty$, hence the full sum
