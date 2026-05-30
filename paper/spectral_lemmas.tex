@@ -48,14 +48,29 @@ point $0$ in its interior; moreover $f_{u_c}$ is a smooth diffeomorphism
 on the orientation-preserving complement of $\{x_c = 0\}$, so
 $F|_{A_j} = f_{u_c}^{2j}|_{A_j}$ is $C^2$.
 
-For uniform expansion: the Misiurewicz parameter $u_c$ is hyperbolic
-along the critical orbit in the sense of \cite[\S V]{demelo1993one}, so
-there exist constants $C > 0$ and $\lambda > 1$ such that for every
-$n \geq 0$ and every $x$ outside a bounded number of preimages of the
-critical point, $|(f_{u_c}^n)'(x)| \geq C \lambda^n$. Applied to
-$F = f_{u_c}^{2j}$ on $A_j$ this gives $|F'| \geq C \lambda^{2j} \geq C \lambda^2$,
-and shrinking $C$ if necessary into the constant of the lemma proves
-the claim.
+For uniform expansion: since $u_c$ is a Misiurewicz parameter
+(post-critically pre-periodic), the critical orbit $\{f_{u_c}^n(0) : n \geq 0\}$
+is finite and lands on a repelling periodic orbit. By Ma\~n\'e's
+hyperbolicity theorem for one-dimensional maps
+\cite[Theorem~A]{mane1985hyperbolicity}, applied to the compact
+$f_{u_c}$-invariant set obtained by removing a small neighborhood
+$U$ of the critical point, there exist constants $C > 0$ and
+$\lambda > 1$ such that
+\[
+    |(f_{u_c}^n)'(x)| \geq C \lambda^n
+    \qquad \text{for all } n \geq 0
+    \text{ and all } x \notin \bigcup_{i=0}^{n-1} f_{u_c}^{-i}(U).
+\]
+By construction, the cylinder $A_j$ consists of itineraries whose
+interior symbols are all $R$, so for $x \in A_j$ the orbit
+$\{x, f_{u_c}(x), \ldots, f_{u_c}^{2j-1}(x)\}$ avoids a fixed
+neighborhood of $0 = x_c$; this is precisely the hypothesis of Ma\~n\'e's
+estimate. Applied to $F = f_{u_c}^{2j}$ on $A_j$,
+$|F'(x)| \geq C \lambda^{2j} \geq C \lambda^2$, and absorbing $C$
+into the constant of the lemma proves the claim. The ergodic
+foundation underlying this construction (existence of an absolutely
+continuous invariant measure with bounded distortion) is
+\cite[Theorem~1]{misiurewicz1981absolutely}.
 \end{proof}
 
 The induced map $F$ has the standard structure to which the

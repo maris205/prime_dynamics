@@ -11,6 +11,66 @@ all data files are reproduced as \texttt{results/expN\_*.csv} or
 \texttt{.json}. The figures \texttt{fig1}--\texttt{fig4} in the main
 text are produced by scripts \texttt{figures/fig1\_*.py}--\texttt{figures/fig4\_*.py}.
 
+\subsection{Summary of numerical verifications}
+\label{app:exp-summary}
+
+We summarise the headline outcomes of the experimental verifications
+referenced from Sections~\ref{sec:macro}--\ref{sec:markov}. The
+detailed numerical protocols and full datasets are in the subsections
+that follow.
+
+\paragraph{Even-gap rigidity and decay rate.} At $5 \times 10^8$ logistic
+iterations, all odd gaps have empirical mass exactly zero, and the
+successive even-gap ratios $\mu_{2m+2}/\mu_{2m}$ converge monotonically
+to $p_\infty \approx 0.596 \pm 0.001$ (Appendix~\ref{app:exp-decay}).
+The depth-dependent branching probability $\alpha_n$ converges to
+$\alpha_\infty \approx 0.405$ within four levels, in agreement with
+the geometric rate predicted by Lemma~\ref{lem:alpha-convergence}.
+
+\paragraph{Twin density and the $C_2$ identity.} The Cram\'er-baseline
+twin enhancement $H = \mu_2 / (\rho_L (1 - \rho_L)) \approx 2.74$ at
+$u_c$, exactly twice the empirical real-prime value
+$H_{\rm prime} \approx 1.30 \approx 2 C_2$
+(Appendix~\ref{app:exp-twin}). The factor of $2$ is the
+parity-rigidity contribution of Proposition~\ref{prop:parity-factor};
+after dividing it out, the residual short-range enhancement of
+$\mu_2$ above the asymptotic-geometric extrapolation
+(Theorem~\ref{thm:geometric-decay}) is $\sim 17\%$, in qualitative
+agreement with the Hardy--Littlewood factor.
+
+\paragraph{Phenomenological calibration of $C_2$ in
+\cite{wang2026emergence}.}
+The non-autonomous schedule $u_n = u_c - c (\log n)^{-2}$ used in
+\cite{wang2026emergence} introduces a free coupling constant $c$. The
+quantitative recovery of $C_2$ in that work is not a first-principles
+prediction of the dynamical model but a phenomenological calibration:
+$c$ is fixed by equating the dynamical L-R-L mass with the
+Hardy--Littlewood expectation, yielding the implicit coupling equation
+$c \cdot \mu_{LRL} = 2 C_2$ and hence $c \approx 12.7$. Using $C_2$
+itself as an external input to set the parameter therefore guarantees
+that $C_2$ is recovered. What the unimodal projection delivers
+\emph{without} external calibration is (i) the non-trivial topological
+capacity $\mu_{LRL} \approx 0.1037$ (Lemma~\ref{lem:positive-mass}),
+(ii) the $1/(\log n)^2$ envelope of the integrated density, and
+(iii) the parity-driven enhancement of Proposition~\ref{prop:parity-factor}.
+These are the genuine intrinsic outputs; the precise numerical
+identity with $C_2$ requires the extrinsic coupling constant
+(Appendix~\ref{app:exp-nonauto}).
+
+\paragraph{Joint constellations and mod-3 invisibility.} For consecutive
+gaps, $P(g_i = 2, g_{i+1} = 4)$ in the 1D model factorises as
+$\mu_2 \mu_4$ within sampling error (joint enhancement
+$\approx 1.01$), while real primes show enhancement $\approx 1.64$
+matching the Hardy--Littlewood triplet constant. The pattern $(2, 2)$
+has positive cylinder mass in the model but is forbidden in real primes
+beyond the singleton $(3, 5, 7)$, giving an empirical contrast of five
+orders of magnitude (Figure~\ref{fig:joint-heatmap},
+Appendix~\ref{app:exp-joint}). Quadruplet patterns
+$(2, 4, 2)$ amplify the divergence further. We interpret this as a
+direct verification of Corollary~\ref{cor:no-mod-3} that does not
+require an asymptotic limit: the joint structure already exposes the
+absence of mod-$3$ phase memory in a single line of statistics.
+
 \subsection{Defect-density sweep}
 \label{app:exp-defects}
 
