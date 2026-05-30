@@ -8,6 +8,12 @@ Companion repository for the manuscript
 
 This repository contains the LaTeX source, all numerical experiments, the figure-generation scripts, and six companion Jupyter notebooks reproducing the headline numerical claims of the paper.
 
+<p align="center">
+  <img src="figures/fig3_defect_density.png" alt="Topological-defect density rho(N) versus the physical horizon, with spikes only at Q_3 and Q_5" width="80%">
+  <br>
+  <em>Topological-defect density $\rho(N)$ for $Q_k$, $k = 1, \ldots, 14$. Defects appear only at $Q_3$ (parity flip at $n = 31$) and at $Q_5$ (the 113–127 prime gap), and are exactly $0$ for every other stage in $k \leq 5000$.</em>
+</p>
+
 ## What's in the paper
 
 The paper studies the symbolic dynamics of the Eratosthenes sieve under the Metropolis–Stein–Stein (MSS) kneading admissibility framework, taking as starting object the matching between the sieve word $Q_k = \prod_{j \le k} S_{p_j}$ and admissible itineraries of the unimodal map $x \mapsto 1 - u x^2$ at the band-merging parameter $u_c \approx 1.5436890$. Two unconditional theorems anchor the contribution.
@@ -19,6 +25,26 @@ The paper studies the symbolic dynamics of the Eratosthenes sieve under the Metr
 - **Asymptotic geometric decay (Theorem C, conditional on standard spectral lemmas)**. A four-state parity-split chain forces $\mu_{2m+2}/\mu_{2m} \to p_\infty \approx 0.596$, ruling out internal mod-3 resonance and identifying the unimodal projection as an abelian / mod-2 shadow of the prime distribution.
 
 The paper closes with a clearly conditional reduction connecting recurrence to the L-R-L cylinder under the unimodal flow to a precisely stated arithmetic shadowing problem.
+
+<table>
+<tr>
+<td align="center" width="33%">
+<img src="figures/fig1_microscopic_breakdown.png" alt="Parity-lex collapse of Q_3 at n=31" width="100%"><br>
+<em>Microscopic breakdown</em><br>
+<sub>$Q_3$ vs $\sigma^{22}(Q_3)$: 7 R's in the prefix flip the parity-twisted lex rule; the candidate emits R at $n=31$ but $Q_3$ emits L (since 31 is prime), so $Q_3 \prec \sigma^{22}(Q_3)$ — admissibility fails.</sub>
+</td>
+<td align="center" width="33%">
+<img src="figures/fig2_geometric_vs_HL.png" alt="Geometric decay vs Hardy-Littlewood spectrum" width="100%"><br>
+<em>Geometric decay vs HL spectrum</em><br>
+<sub>Left: 1D logistic at $u_c$ has clean asymptotic geometric decay $\mu_{2m} \sim c\,p_\infty^m$. Right: real primes show Hardy-Littlewood resonance at multiples of 6 — provably outside the model's reach.</sub>
+</td>
+<td align="center" width="33%">
+<img src="figures/fig4_joint_gap_heatmap.png" alt="Joint gap distribution heatmap" width="100%"><br>
+<em>Joint gap mod-3 absence</em><br>
+<sub>$P(g_i, g_{i+1})$ heatmaps. The 1D model factorises (rank-1); real primes show a diagonal mod-6 structure with $(2,2)$ extinct beyond the singleton triplet $(3,5,7)$.</sub>
+</td>
+</tr>
+</table>
 
 ## Repository layout
 
