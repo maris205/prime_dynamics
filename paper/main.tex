@@ -902,7 +902,11 @@ $T \geq N_0$; subtracting $N_0$ from the count over $[0, N_0]$ gives
     \;\geq\; (\delta - \varepsilon) T - N_0
     \;\geq\; (\delta - 2\varepsilon)(T - N_0)
 \]
-for all $T$ sufficiently large (specifically, $T \geq N_0 / \varepsilon$).
+for all $T$ sufficiently large; specifically, the second inequality
+holds whenever $\varepsilon T \geq N_0 (1 - \delta + 2\varepsilon)$,
+which is in turn guaranteed by $T \geq N_0 / \varepsilon$ once
+$\delta \geq 2\varepsilon$ (true since
+$\varepsilon \in (0, \delta/2)$ implies $1 - \delta + 2\varepsilon < 1$).
 Since $(\log n)^{-2}$ is decreasing in $n$, summing over the visit
 times in $[N_0, T]$ in increasing order gives
 \[

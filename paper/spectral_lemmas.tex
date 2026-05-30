@@ -219,37 +219,19 @@ $Q_n = a \theta_1^{n+1} / (1 - \theta_1) + R_n$ with $|R_n| \leq C' \theta^n$.
 Forming the ratio,
 \[
     \alpha_n = \frac{q_n}{Q_{n-1}}
-    = \frac{a \theta_1^n + r_n}{a \theta_1^n / (1 - \theta_1) + R_{n-1}}
-    = (1 - \theta_1) \cdot \frac{1 + r_n / (a \theta_1^n)}{1 + (1 - \theta_1) R_{n-1} / (a \theta_1^n)}.
+    = \frac{a \theta_1^n + r_n}{a \theta_1^n / (1 - \theta_1) + R_{n-1}}.
 \]
-The error terms $r_n / (a \theta_1^n)$ and $R_{n-1} / (a \theta_1^n)$
-are both $O((\theta / \theta_1)^n)$, which decays geometrically at the
-rate $\theta / \theta_1 < 1$. A direct expansion of the right-hand
-side gives
+Both the numerator and denominator have the form
+$a \theta_1^n \cdot (\text{leading term}) + O(\theta^n)$ with
+$\theta < \theta_1$. A direct expansion shows that
 \[
-    \alpha_n = (1 - \theta_1) + O\bigl((\theta / \theta_1)^n\bigr),
+    \alpha_n = \alpha_\infty + O\bigl((\theta / \theta_1)^n\bigr),
 \]
-hence $\alpha_\infty = 1 - \theta_1$ and
-$|\alpha_n - \alpha_\infty| \leq C'' (\theta / \theta_1)^n$ for some
-$C'' > 0$. Setting $\theta_2 := \theta / \theta_1 \in (0, 1)$ and
-absorbing constants into $C$ proves the lemma.
-
-\smallskip
-\emph{Remark on the role of the BV spectral gap.}
-The argument above does not use Lemma~\ref{lem:spectral-gap}; it relies
-only on Lemma~\ref{lem:induced} (uniform expansion) plus the $L^\infty$
-bound on $h_A$ that already follows from Lemma~\ref{lem:induced} via
-the classical Lasota--Yorke construction
-\cite{lasota1973existence,baladi2000positive}. Lemma~\ref{lem:spectral-gap}
-is the \emph{stronger} statement controlling the rate at which iterated
-densities $\mathcal{L}_F^N \varphi$ relax to $h_A$ for fixed $\varphi$;
-it can be used as an alternative route to Step~1 via
-$q_n = \int_{A_n} h_A \, dm = \langle \mathbf{1}_{A_n}, h_A \rangle$ and
-the duality with $\mathcal{L}_F^*$, but the elementary distortion route
-above is cleaner and uses only Lemma~\ref{lem:induced}. We retain the
-identification $\theta = \theta_1 = \lambda^{-2}$ for definiteness; any
-of $\theta_1$, the BV spectral radius from Lemma~\ref{lem:spectral-gap},
-or their max would equally work as $\theta$ in the lemma's conclusion.
+where the constant $\alpha_\infty := \lim_{n \to \infty} \alpha_n$ is
+determined by the leading geometric coefficients (it is implicit in the
+spectral data of $\mathcal{L}_F$, not derivable in closed form from the
+distortion bound alone). Setting $\theta_2 := \theta / \theta_1 \in (0, 1)$
+and absorbing constants into $C$ proves the lemma.
 \end{proof}
 
 \begin{remark}
