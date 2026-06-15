@@ -1,0 +1,82 @@
+\documentclass[11pt,a4paper]{letter}
+
+\usepackage[margin=0.9in,top=0.7in,bottom=0.7in]{geometry}
+\usepackage{hyperref}
+\renewcommand{\baselinestretch}{0.97}
+
+\signature{Liang Wang}
+\address{School of Artificial Intelligence and Automation \\
+Huazhong University of Science and Technology \\
+Wuhan 430074, P.R. China \\
+\texttt{wangliang.f@gmail.com}}
+
+\begin{document}
+
+\begin{letter}{
+The Editors \\
+\emph{Nonlinearity} \\
+IOP Publishing \& London Mathematical Society
+}
+
+\opening{Dear Editors,}
+
+I am submitting the enclosed manuscript, \emph{Transient Chaos and
+Topological Bounds in Prime Dynamics: Revisiting the One-Dimensional
+Sieve Mapping}, for consideration as a research article.
+
+The paper studies the symbolic dynamics of the Eratosthenes sieve
+under the Metropolis--Stein--Stein (MSS) kneading admissibility
+framework, taking as starting object the matching, recently introduced
+in a published companion paper (Wang, \emph{Research in Mathematics}
+\textbf{13}(1), 2026, DOI: \href{https://doi.org/10.1080/27684830.2026.2684334}{10.1080/27684830.2026.2684334}),
+between the sieve word $Q_k$ and admissible itineraries of the
+unimodal map $x \mapsto 1 - u x^2$ at the band-merging parameter
+$u_c \approx 1.5436890$. Two unconditional theorems anchor the
+contribution. The \emph{Parity-Gap Lemma} (Theorem~A) shows that any
+MSS-defective shift of $W_k = Q_k[0, p_{k+1}^2)$ forces a prime gap
+of length $\geq p_{k+1} - 1$ at a specific position; this reduces
+the topological-admissibility question to an extremal prime-gap
+inequality, and we observe that classical gap bounds (Legendre,
+Andrica, RH, BHP) all fail to clear it---only a strongly sub-root
+bound such as Cram\'er's conjecture forces eventual admissibility.
+The \emph{even-gap rigidity} theorem (Theorem~B) shows that gaps
+between consecutive $L$-symbols at $u_c$ are almost surely even,
+via the parity-twisted lex order on $RLR^\infty$. A third structural
+result (Theorem~C) shows the gap measure decays asymptotically
+geometrically with ratio $p_\infty \approx 0.596$, ruling out
+internal mod-$3$ resonance and identifying the unimodal projection
+as an abelian / mod-$2$ shadow of the prime distribution. The paper
+closes with a clearly conditional reduction connecting recurrence
+to the $L$-$R$-$L$ cylinder to a precisely stated arithmetic
+shadowing problem; we explicitly disclaim any consequence for
+classical number-theoretic conjectures.
+
+The paper fits squarely within \emph{Nonlinearity}'s remit at the
+intersection of symbolic dynamics, ergodic theory of one-dimensional
+unimodal maps, and arithmetic dynamics. The proofs rely on classical
+results of Misiurewicz, Ma\~n\'e, Lasota--Yorke, and Young, which are
+familiar to the journal's audience. The methodological pattern of
+the paper---numerical experiments to surface a structural lemma
+followed by a proof on classical foundations---is in keeping with
+\emph{Nonlinearity}'s tradition of bridging quantitative experiment
+and rigorous theory.
+
+I should disclose that I am also the author of the published
+companion paper cited above, which proposes the unimodal--sieve
+matching itself; the present paper independently analyses the
+admissibility structure of that matching and is structured to stand
+alone---no theorem statement depends on the prior work, as recorded
+in the title-page footnote. The manuscript is not under consideration
+elsewhere; there are no competing interests; and the complete LaTeX
+source, the numerical experiments, the figure-generation scripts, and
+six companion Jupyter notebooks reproducing the headline numerical
+claims are openly available at
+\url{https://github.com/maris205/prime_dynamics}.
+
+I thank the Editors and referees in advance for their consideration.
+
+\closing{Sincerely yours,}
+
+\end{letter}
+
+\end{document}
