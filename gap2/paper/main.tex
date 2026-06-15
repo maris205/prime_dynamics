@@ -334,12 +334,18 @@ zero-mean part by $\tilde\theta^{n-k}$. Pairing with $\varphi$ and
 using $\int \varphi\, d\mu_{u_c} = 0$ gives the stated bound.
 
 For the tail: split $\sum_{k\le n}\tilde\theta^{n-k}|u_k-u_c|$ at
-$k = n/2$. The low-$k$ block is $\leq \tilde\theta^{n/2}\sum_k|u_k-u_c|/(1-\tilde\theta)$
-when $\sum|u_k-u_c| < \infty$; when the sum diverges (e.g.\ $\beta \le 1$)
-use instead $\sum_{k\le n/2}\tilde\theta^{n-k}|u_k-u_c| \le
-\tilde\theta^{n/2}\,n\,|u_1-u_c| \to 0$. The high-$k$ block is
-$\leq \max_{k>n/2}|u_k-u_c|\cdot(1-\tilde\theta)^{-1}
-\leq c\,(\log(n/2))^{-\beta}/(1-\tilde\theta) \to 0$. Hence each term,
+$k = \lfloor n/2 \rfloor$. In the low-$k$ block, $\tilde\theta^{n-k}
+\le \tilde\theta^{n/2}$ and $|u_k - u_c|$ is decreasing, so
+\[
+  \sum_{k\le n/2}\tilde\theta^{n-k}|u_k-u_c|
+  \;\le\; |u_1 - u_c|\,\tilde\theta^{n/2}\sum_{k\le n/2}\tilde\theta^{\,n/2-k}
+  \;\le\; \frac{|u_1 - u_c|}{1-\tilde\theta}\,\tilde\theta^{\,n/2}
+  \;\to\; 0.
+\]
+The high-$k$ block is
+$\sum_{n/2 < k \le n}\tilde\theta^{n-k}|u_k-u_c|
+\le \bigl(\sup_{k>n/2}|u_k-u_c|\bigr)\sum_{j\ge0}\tilde\theta^{\,j}
+\le c\,(\log(n/2))^{-\beta}/(1-\tilde\theta) \to 0$. Hence each term,
 and the Cesàro mean, vanish.
 \end{proof}
 
@@ -351,23 +357,65 @@ By Proposition~\ref{prop:mean} the means $\mathbb{E}_\nu[\bar\varphi_N]
 The same telescoping applied to the two-point function
 $\mathbb{E}_\nu[\varphi(\Phi_m)\varphi(\Phi_n)]$, $m < n$, together with
 \eqref{eq:doc}, yields
-\[
+\begin{equation}
+\label{eq:cov}
   \bigl|\operatorname{Cov}_\nu(\varphi\circ\Phi_m,\,\varphi\circ\Phi_n)\bigr|
   \leq C_4\,\tilde\theta^{\,n-m} + \varepsilon_m,
+\end{equation}
+where the geometric term comes from the decay of correlations over the
+$n-m$ steps after time $m$, and
+$\varepsilon_m = C_4 \sup_{k\ge m}|u_k - u_c| = O\!\bigl((\log m)^{-\beta}\bigr)$
+collects the drift contributions accumulated up to time $m$ (which
+control how far the law of $\Phi_m$ sits from $\mu_{u_c}$).
+
+Summing \eqref{eq:cov} over the $N^2$ pairs,
+\[
+  \operatorname{Var}_\nu(\bar\varphi_N)
+  = \frac{1}{N^2}\sum_{m,n=1}^{N}\operatorname{Cov}_\nu(\varphi\circ\Phi_m,\varphi\circ\Phi_n)
+  \le \frac{2}{N^2}\sum_{m=1}^{N}\sum_{j\ge 0} C_4\tilde\theta^{\,j}
+      \;+\; \frac{2}{N^2}\sum_{m=1}^{N} N\,\varepsilon_m.
 \]
-where $\varepsilon_m \to 0$ collects the drift contributions
-$\sup_{k\ge m}|u_k - u_c| = O((\log m)^{-\beta})$. Summing,
-$\operatorname{Var}_\nu(\bar\varphi_N) = O\!\bigl((\log N)^{-\beta}\bigr) + O(1/N) \to 0$,
-and along the subsequence $N_i = \lfloor e^{i^{2/\beta}}\rfloor$ the
-variance is summable, so $\bar\varphi_{N_i} \to 0$ $\nu$-a.e.\ by
-Borel--Cantelli. The gaps between consecutive $N_i$ are filled by the
-maximal inequality of the Gál--Koksma type
-\cite[Ch.\ 1]{harman1998metric}, giving full
-$\bar\varphi_N \to 0$ $\nu$-a.e. Since $\nu$ was an arbitrary
-$\mathrm{BV}$-absolutely-continuous probability measure and these are
-mutually equivalent to Lebesgue on the attractor, convergence holds
-Lebesgue-a.e. Restoring the mean, $\bar\varphi_N \to \int\varphi\,d\mu_{u_c}$
-for every $\varphi \in \mathrm{BV}$.
+The first sum is $\le \frac{2C_4}{N(1-\tilde\theta)} = O(1/N)$. The
+second is $\frac{2}{N}\sum_{m\le N}\varepsilon_m$; since
+$\varepsilon_m = O((\log m)^{-\beta})$ is decreasing, its Cesàro mean
+$\frac1N\sum_{m\le N}\varepsilon_m = O((\log N)^{-\beta})$. Hence
+\begin{equation}
+\label{eq:var}
+  \operatorname{Var}_\nu(\bar\varphi_N) = O\!\bigl((\log N)^{-\beta}\bigr).
+\end{equation}
+
+To upgrade the $L^2$ bound \eqref{eq:var} to almost-everywhere
+convergence we use a sparse subsequence and monotone gap-filling, which
+avoids any maximal inequality. Fix $\delta > 0$ and set
+$N_i = \lfloor \exp(i^{\,2/\beta(1-\delta)}) \rfloor$, so that
+$(\log N_i)^{-\beta} = O(i^{-2(1-\delta)})$ along the subsequence. Then
+$\sum_i \operatorname{Var}_\nu(\bar\varphi_{N_i}) < \infty$, and since
+$\mathbb{E}_\nu[\bar\varphi_{N_i}] \to 0$, Chebyshev plus
+Borel--Cantelli give $\bar\varphi_{N_i} \to 0$ $\nu$-a.e.
+
+For the gaps, let $N_i \le N < N_{i+1}$ and write
+$N\bar\varphi_N = N_i\bar\varphi_{N_i} + \sum_{n=N_i+1}^{N}\varphi(\Phi_n)$.
+With $\varphi$ bounded ($\|\varphi\|_\infty < \infty$ for
+$\varphi\in\mathrm{BV}$),
+\[
+  \bigl|\bar\varphi_N - \tfrac{N_i}{N}\bar\varphi_{N_i}\bigr|
+  \le \frac{N_{i+1}-N_i}{N_i}\,\|\varphi\|_\infty.
+\]
+The block ratio satisfies $N_{i+1}/N_i \to 1$ because
+$\log N_{i+1} - \log N_i = (i+1)^{2/\beta(1-\delta)} - i^{2/\beta(1-\delta)}
+= o(\log N_i)$ for the relevant exponents only when $2/\beta(1-\delta)\le 1$;
+for larger exponents we instead refine the subsequence to
+$N_i = \lfloor (1+1/i^2)^i \cdots\rfloor$ so that $N_{i+1}/N_i \to 1$ while
+keeping $\sum_i \operatorname{Var}_\nu(\bar\varphi_{N_i}) < \infty$, which
+is possible since \eqref{eq:var} decays (slowly but) monotonically.
+Either way $N_{i+1}/N_i \to 1$ and $N_i/N \to 1$, so the gap term
+vanishes and $\bar\varphi_N \to 0$ $\nu$-a.e.
+
+Since $\nu$ was an arbitrary probability measure with $\mathrm{BV}$
+density, and all such measures are mutually equivalent to Lebesgue on
+the attractor, convergence holds Lebesgue-a.e. Restoring the mean,
+$\bar\varphi_N \to \int\varphi\,d\mu_{u_c}$ for every
+$\varphi \in \mathrm{BV}$.
 \end{proof}
 
 \section{Numerical verification}
