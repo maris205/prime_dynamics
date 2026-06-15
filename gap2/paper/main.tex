@@ -1,0 +1,176 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A Sequential Birkhoff Theorem for\\
+       Slow Logarithmic Drift in\\
+       Non-Uniformly Expanding Unimodal Maps}
+\author{Liang Wang\thanks{School of Artificial Intelligence and
+Automation, Huazhong University of Science and Technology, Wuhan
+430074, P.R.\ China. E-mail: \texttt{wangliang.f@gmail.com}.}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove a sequential (non-autonomous) Birkhoff ergodic theorem for
+compositions of unimodal maps $f_{u_n}(x) = 1 - u_n x^2$ whose
+parameters drift slowly to a Misiurewicz value $u_c$. Under the
+logarithmic rate $|u_n - u_c| \le c\,(\log n)^{-\beta}$ with
+$\beta > 0$, we show that for Lebesgue-almost-every initial condition
+and every bounded-variation observable, the time average along the
+sequential orbit converges to the spatial average against the unique
+absolutely continuous invariant measure $\mu_{u_c}$ of the limiting
+autonomous map. The proof works on the induced first-return map to the
+left branch, where the map is uniformly expanding, and combines the
+Keller--Liverani spectral-stability theorem with a Cesàro estimate of
+the accumulated drift error. The result supplies the ergodic
+foundation for non-autonomous symbolic models of arithmetic sequences,
+in which a slowly aging parameter is used to match a target density
+envelope.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Sequential dynamical systems and slow drift}
+
+Let $f_u(x) = 1 - u x^2$ be the standard unimodal family on $[-1,1]$.
+A \emph{sequential} (or non-autonomous) dynamical system is generated
+by composing different members of the family along a parameter
+schedule $(u_n)_{n\ge 1}$,
+\begin{equation}
+\label{eq:cocycle}
+  \Phi_N(x) = f_{u_N}\circ f_{u_{N-1}}\circ\cdots\circ f_{u_1}(x).
+\end{equation}
+When $u_n \equiv u$ is constant the classical Birkhoff theorem governs
+the statistics of $\Phi_N$. When $u_n$ varies, even slowly, the orbit
+no longer lives on a single attractor and Birkhoff does not apply
+directly. This paper establishes a Birkhoff-type law of large numbers
+when $u_n$ drifts to a fixed limit $u_c$ at a logarithmic rate.
+
+\subsection{Motivation}
+
+Non-autonomous unimodal schedules of exactly this type arise in recent
+symbolic-dynamical models of arithmetic sequences, where a slowly
+``aging'' parameter $u_n = u_c - c\,(\log n)^{-2}$ is tuned so that the
+symbolic $L$-frequency of the orbit matches a prescribed density
+envelope (for instance the prime density $1/\log n$). Such models
+posit, but do not prove, that ergodic averages along the drifting orbit
+converge to the autonomous limit. The present paper supplies that
+missing ergodic foundation in a self-contained form, independent of any
+number-theoretic application.
+
+\subsection{Main result}
+
+We work at a Misiurewicz parameter $u_c$: the critical orbit of
+$f_{u_c}$ is pre-periodic and lands on a repelling cycle, so $f_{u_c}$
+admits a unique absolutely continuous invariant probability measure
+$\mu_{u_c}$ with bounded-variation density, and is non-uniformly
+expanding with the only critical point at $x=0$.
+
+\begin{assumption}[Slow logarithmic drift]
+\label{ass:drift}
+The schedule $(u_n)$ satisfies $u_n \to u_c$ and, for some $c>0$,
+$\beta>0$ and all large $n$,
+\[
+  |u_n - u_c| \;\le\; \frac{c}{(\log n)^{\beta}}.
+\]
+We further assume each $u_n$ lies in a fixed neighbourhood
+$U$ of $u_c$ throughout which the induced-map spectral gap of
+Section~\ref{sec:spectral} is uniform.
+\end{assumption}
+
+\begin{theorem}[Sequential Birkhoff theorem]
+\label{thm:main}
+Let $u_c$ be a Misiurewicz parameter and let $(u_n)$ satisfy
+Assumption~\ref{ass:drift}. Then for Lebesgue-almost-every $x_0\in[-1,1]$
+and every $\varphi \in \mathrm{BV}[-1,1]$,
+\[
+  \frac{1}{N}\sum_{n=1}^{N}\varphi\bigl(\Phi_n(x_0)\bigr)
+  \;\xrightarrow[N\to\infty]{}\;
+  \int_{-1}^{1}\varphi \, d\mu_{u_c}.
+\]
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:spectral}--\ref{sec:birkhoff} and
+has three ingredients, summarised here.
+
+\begin{enumerate}
+\item \textbf{Inducing (Section~\ref{sec:induced}).} The raw maps
+$f_{u_n}$ are not uniformly expanding because of the critical point at
+$x=0$. We pass to the first-return map $F_{u}$ to the left branch
+$A = \{x<0\}$, which is piecewise $C^2$ and uniformly expanding with a
+countable Markov partition, uniformly in $u\in U$.
+
+\item \textbf{Spectral stability (Section~\ref{sec:spectral}).} The
+Perron--Frobenius operators $\mathcal{L}_{F_u}$ on
+$\mathrm{BV}(A)$ have a uniform spectral gap, and by the
+Keller--Liverani perturbation theorem the leading data
+(eigenvalue $1$, invariant density $h_u$, spectral projection) vary
+continuously, indeed Hölder-continuously, in $u$ near $u_c$.
+
+\item \textbf{Drift accumulation and Birkhoff
+(Section~\ref{sec:birkhoff}).} Telescoping the sequential orbit against
+the autonomous orbit at $u_c$, the accumulated error is governed by
+$\sum_{n}|u_n-u_c|$ weighted by the exponential decay of correlations
+from the spectral gap. A Cesàro / Gál--Koksma argument then upgrades
+the resulting $L^2$ control to almost-everywhere convergence.
+\end{enumerate}
+
+\section{The induced first-return map}
+\label{sec:induced}
+
+% TODO: define A = {x<0}, return time tau_A, induced map F_u = f_u^{tau_A}.
+% State: F_u piecewise C^2, |F_u'| >= lambda^2 > 1 uniformly in u in U,
+% countable Markov partition A_j = {tau_A = 2j} (even return times by
+% the parity skeleton at u_c, perturbing to nearby u).
+% Cite Misiurewicz 1981, Mane 1985, de Melo--van Strien.
+
+\section{Spectral stability under the drift}
+\label{sec:spectral}
+
+% TODO: BV transfer operator L_{F_u}. Uniform Lasota--Yorke inequality
+% across u in U => uniform spectral gap (Baladi). Keller--Liverani 1999:
+% |||L_{F_u} - L_{F_{u_c}}||| -> 0 in the KL triple-norm as u -> u_c,
+% with rate controlled by |u - u_c|. Conclude: simple eigenvalue 1,
+% gap theta < 1 uniform, h_u -> h_{u_c} in BV, with Holder modulus.
+
+\section{Drift accumulation and almost-everywhere convergence}
+\label{sec:birkhoff}
+
+% TODO:
+% Step A: autonomous Birkhoff at u_c gives (1/N) sum phi(f_{u_c}^n x) -> int phi dmu.
+% Step B: bound | E[phi(Phi_n x)] - int phi dmu | <= C theta^n + C sum_{k<=n}|u_k-u_c| theta^{n-k}.
+%         The convolution of geometric decay with (log k)^{-beta} is o(1).
+% Step C: variance / covariance bound => Gal-Koksma or Cesaro a.e. upgrade.
+% Conclude Theorem 1.
+
+\section{Numerical verification}
+\label{sec:numerics}
+
+% TODO: exp1 (BV-norm convergence h_{u_n} -> h_{u_c}),
+%       exp2 (time-average convergence under the log schedule).
+
+\section{Concluding remarks}
+\label{sec:remarks}
+
+% TODO: critical beta discussion; relation to non-autonomous symbolic
+% models; the prime-dynamics application as one instance.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}
