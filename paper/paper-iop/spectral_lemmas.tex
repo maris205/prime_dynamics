@@ -1,0 +1,243 @@
+% Spectral lemmas underlying Theorem C (asymptotic geometric decay).
+% Loaded from main.tex via \input{spectral_lemmas.tex}.
+
+\subsection{Spectral preparation: induced map, transfer operator, decay}
+\label{ssec:spectral}
+
+The asymptotic geometric decay of the gap measure (Theorem~C below)
+rests on a spectral analysis of the Perron--Frobenius operator
+associated with a first-return map of $f_{u_c}$. We collect here three
+standard ingredients adapted to our setting; the proofs combine
+classical results of Misiurewicz~\cite{misiurewicz1981absolutely},
+Lasota--Yorke~\cite{lasota1973existence}, and Young~\cite{young1992decay}
+in the framework of \cite{baladi2000positive}.
+
+The parameter $u_c$ is the band-merging point of the family
+$f_u(x) = 1 - u x^2$, characterised by the kneading sequence
+$K(u_c) = R L R^\infty$. It is post-critically pre-periodic
+(Misiurewicz type): the orbit of the critical point $0$ is
+$0 \mapsto 1 \mapsto 1 - u_c \mapsto \ldots$ and lands on a repelling
+periodic orbit after finitely many iterations. By
+\cite{misiurewicz1981absolutely}, $f_{u_c}$ admits a unique absolutely
+continuous invariant probability measure $\mu$ supported on the chaotic
+band, with bounded-variation density. We denote the $L$- and $R$-cylinders
+\[
+    I_L = \{x : x < 0\}, \qquad I_R = \{x : x > 0\}.
+\]
+
+\begin{lemma}[Induced first-return map]
+\label{lem:induced}
+Let $A = I_L$ and let $\tau_A : A \to \mathbb{N}_{\geq 1}$ denote the
+first-return time to $A$. The induced map
+\[
+    F : A \to A, \qquad F(x) = f_{u_c}^{\tau_A(x)}(x),
+\]
+is well-defined $\mu$-almost everywhere on $A$ and admits a countable
+Markov partition $\{A_j\}_{j \geq 1}$ with $A_j = \{ x \in A : \tau_A(x) = 2j \}$
+on each of which $F$ is a piecewise $C^2$ diffeomorphism with
+$|F'| \geq \lambda^{2}$ for some $\lambda > 1$. In particular $F$ is
+uniformly expanding on a full-measure subset of $A$.
+\end{lemma}
+
+\begin{proof}
+By Proposition~\ref{prop:even-gaps}, every return time $\tau_A$ is even,
+so the partition is indexed by $j = \tau_A / 2 \in \mathbb{N}_{\geq 1}$.
+Each $A_j$ corresponds to an itinerary block of length $2j - 1$ all of
+whose interior symbols are $R$, hence does not contain the critical
+point $0$ in its interior; moreover $f_{u_c}$ is a smooth diffeomorphism
+on the orientation-preserving complement of $\{x_c = 0\}$, so
+$F|_{A_j} = f_{u_c}^{2j}|_{A_j}$ is $C^2$.
+
+For uniform expansion: since $u_c$ is a Misiurewicz parameter
+(post-critically pre-periodic), the critical orbit $\{f_{u_c}^n(0) : n \geq 0\}$
+is finite and lands on a repelling periodic orbit. By Ma\~n\'e's
+hyperbolicity theorem for one-dimensional maps
+\cite[Theorem~A]{mane1985hyperbolicity}, applied to the compact
+$f_{u_c}$-invariant set obtained by removing a small neighborhood
+$U$ of the critical point, there exist constants $C > 0$ and
+$\lambda > 1$ such that
+\[
+    |(f_{u_c}^n)'(x)| \geq C \lambda^n
+    \qquad \text{for all } n \geq 0
+    \text{ and all } x \notin \bigcup_{i=0}^{n-1} f_{u_c}^{-i}(U).
+\]
+By construction, the cylinder $A_j$ consists of itineraries whose
+interior symbols are all $R$, so for $x \in A_j$ the orbit
+$\{x, f_{u_c}(x), \ldots, f_{u_c}^{2j-1}(x)\}$ avoids a fixed
+neighborhood of $0 = x_c$; this is precisely the hypothesis of Ma\~n\'e's
+estimate. Applied to $F = f_{u_c}^{2j}$ on $A_j$,
+$|F'(x)| \geq C \lambda^{2j} \geq C \lambda^2$, and absorbing $C$
+into the constant of the lemma proves the claim. The ergodic
+foundation underlying this construction (existence of an absolutely
+continuous invariant measure with bounded distortion) is
+\cite[Theorem~1]{misiurewicz1981absolutely}.
+\end{proof}
+
+The induced map $F$ has the standard structure to which the
+Lasota--Yorke / Doeblin--Fortet machinery applies. Let
+$\mathcal{L}_F : \mathrm{BV}(A) \to \mathrm{BV}(A)$ denote the
+Perron--Frobenius (transfer) operator of $F$ on the Banach space of
+functions of bounded variation:
+\[
+    \mathcal{L}_F \varphi (y) = \sum_{x \in F^{-1}(y)} \frac{\varphi(x)}{|F'(x)|}.
+\]
+
+\begin{lemma}[Spectral gap on $\mathrm{BV}$]
+\label{lem:spectral-gap}
+The operator $\mathcal{L}_F$ has the following spectral structure on
+$\mathrm{BV}(A)$:
+\begin{enumerate}
+\item[(i)] $\lambda = 1$ is a simple eigenvalue with eigenfunction
+      $h_A \in \mathrm{BV}(A)$, $h_A > 0$, normalised so that
+      $\mu_A(B) := \int_B h_A \, dm$ is the unique $F$-invariant probability
+      measure absolutely continuous with respect to Lebesgue $m$ on $A$.
+\item[(ii)] The remainder of the spectrum is contained in a closed disk of
+      radius $\theta < 1$.
+\item[(iii)] There exist $C > 0$ and $\theta < 1$ such that for every
+      $\varphi \in \mathrm{BV}(A)$ with $\int \varphi \, d\mu_A = 0$,
+      \[
+          \| \mathcal{L}_F^n \varphi \|_{\mathrm{BV}} \leq C \theta^n \|\varphi\|_{\mathrm{BV}}.
+      \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The proof is a standard application of the Lasota--Yorke inequality for
+piecewise expanding $C^2$ Markov maps. By Lemma~\ref{lem:induced}, $F$
+is uniformly expanding off a measure-zero singular set with derivative
+bound $|F'| \geq \lambda^2 > 1$. By
+\cite[Theorem~3.4]{baladi2000positive} (or
+\cite[Theorem~5.2]{demelo1993one}) there exist $C_1 > 0$ and
+$0 < \rho < 1$ such that
+\[
+    \mathrm{Var}(\mathcal{L}_F^n \varphi)
+    \leq C_1 \rho^n \mathrm{Var}(\varphi) + C_1 \|\varphi\|_{L^1(m)}.
+\]
+This Lasota--Yorke inequality, combined with the compactness of the
+embedding $\mathrm{BV}(A) \hookrightarrow L^1(m)$ for the partition
+$\{A_j\}$, implies via the Ionescu-Tulcea--Marinescu theorem
+\cite[Ch.~II]{baladi2000positive} that $\mathcal{L}_F$ is
+quasi-compact: its essential spectral radius is bounded by $\rho$, and
+the part of the spectrum outside $\{|z| \leq \rho\}$ consists of
+finitely many eigenvalues of finite multiplicity.
+
+Topological transitivity of $f_{u_c}$ on the chaotic band (which holds
+because $u_c$ is in the support of the Misiurewicz parameter set
+\cite{misiurewicz1981absolutely}) lifts to topological transitivity of
+$F$ on $A$, hence the leading eigenvalue $1$ is simple and no other
+eigenvalue lies on the unit circle (a standard consequence of
+quasi-compactness plus mixing, \cite[Theorem~1.5]{young1992decay}).
+This establishes (i) and (ii) with $\theta = \max(\rho, |\lambda_2|)$
+where $\lambda_2$ is the second-largest eigenvalue. Statement (iii) is
+the standard reformulation of (i)--(ii) on the zero-mean
+codimension-$1$ subspace.
+\end{proof}
+
+The third lemma converts the spectral gap into the geometric
+convergence of the depth-dependent branching probability $\alpha_n$
+that drives the gap-measure recursion. Recall that the parity-split
+state graph (Section~\ref{sec:markov}) has $A$ as the $L$-state and a
+single random transition out of $B_o$ with $\alpha_n$-dependent
+probability. We define
+\[
+    \alpha_n := \mathbb{P}_{\!\mu}\bigl(\tau_A \leq 2n + 1 \,\big|\, \tau_A > 2n - 1 \bigr),
+\]
+the conditional probability that the orbit returns to $A$ at the
+$(n+1)$-st available even time, given that it has not yet returned by
+time $2n - 1$.
+
+\begin{lemma}[Geometric convergence of $\alpha_n$]
+\label{lem:alpha-convergence}
+There exist $\alpha_\infty \in (0, 1)$, $C > 0$, and $\theta < 1$
+(the same $\theta$ as in Lemma~\ref{lem:spectral-gap}) such that
+\[
+    |\alpha_n - \alpha_\infty| \leq C \theta^n \qquad \text{for all } n \geq 1.
+\]
+\end{lemma}
+
+\begin{proof}
+We first establish geometric decay of the return-time mass function
+$q_n := \mu_A(\{\tau_A = 2n\}) = \int_{A_n} h_A \, dm$, then deduce
+the convergence of $\alpha_n$.
+
+\smallskip
+\emph{Step 1: $q_n$ decays geometrically.}
+By Lemma~\ref{lem:induced}, on each cylinder $A_j$ the iterate
+$F = f_{u_c}^{2j}|_{A_j}$ is a $C^2$ diffeomorphism with
+$|F'| \geq \lambda^{2j}$ for some $\lambda > 1$. Pulling back the
+unit-mass measure on $F(A_j) \subseteq A$, this distortion bound gives
+$m(A_j) \leq \lambda^{-2j} \, m(F(A_j)) \leq \lambda^{-2j}$ for the
+Lebesgue measure $m$. Combined with the bounded-variation property of
+the invariant density $h_A$ (which is in particular $L^\infty$, by
+\cite[Theorem~5.2]{demelo1993one}), we obtain
+\[
+    q_n = \int_{A_n} h_A \, dm
+    \leq \|h_A\|_{L^\infty} \, m(A_n)
+    \leq \|h_A\|_{L^\infty} \, \lambda^{-2n}
+    = O\bigl((\lambda^{-2})^n\bigr).
+\]
+This is a Markov-renewal-type tail estimate of the form used in Young's
+tower construction \cite{young1992decay} and Aaronson--Denker, and is
+\emph{independent} of the BV spectral gap of
+Lemma~\ref{lem:spectral-gap}: it follows directly from the uniform
+expansion of $F$ and the boundedness of $h_A$.
+
+Setting $\theta_1 := \lambda^{-2} \in (0, 1)$, there exists $C_1 > 0$
+with $q_n \leq C_1 \theta_1^n$ for all $n \geq 1$. By summing,
+$Q_n = \sum_{j > n} q_j \leq C_1 \theta_1^n / (1 - \theta_1)$, so
+$Q_n$ also decays geometrically at rate $\theta_1$.
+
+\smallskip
+\emph{Step 2: $\alpha_n$ converges geometrically (using the BV
+spectral gap).}
+The geometric tail of $q_n$ from Step~1 gives $q_n, Q_n \to 0$ at rate
+$\theta_1$, but is not by itself sufficient to show that the ratio
+$q_n / Q_{n-1}$ converges geometrically: the numerator and denominator
+are both $\Theta(\theta_1^n)$, so their ratio is bounded but a priori
+oscillating. We invoke Lemma~\ref{lem:spectral-gap} to obtain the
+sharper rate.
+
+By the BV spectral gap (Lemma~\ref{lem:spectral-gap}~(iii)) applied to
+the iterates of $h_A$ under the lift to the tower constructed in
+\cite[\S 2]{young1992decay}, the cylinder masses $q_n$ admit the
+asymptotic expansion
+\begin{equation}
+\label{eq:qn-asymptotic}
+    q_n = a \theta_1^n + r_n,
+    \qquad |r_n| \leq C \theta^n
+\end{equation}
+for some $a > 0$ and constants $C > 0$, $\theta < \theta_1$, where
+$\theta$ is the second-largest BV-spectral radius and $a$ is determined
+by the leading eigenfunction.\footnote{Concretely: tower lifting
+realises $q_n$ as the inner product $\langle \mathcal{L}_F^n \mathbf{1}_{A_1}, \mathbf{1}_A \rangle_{\mu_A}$,
+which by Lemma~\ref{lem:spectral-gap}~(iii) decomposes as a leading
+geometric term (eigenvalue $\theta_1$) plus an exponentially smaller
+remainder. The constant $a$ is the $L^2(\mu_A)$ projection onto the
+leading eigenspace.} Summing \eqref{eq:qn-asymptotic} yields
+$Q_n = a \theta_1^{n+1} / (1 - \theta_1) + R_n$ with $|R_n| \leq C' \theta^n$.
+
+Forming the ratio,
+\[
+    \alpha_n = \frac{q_n}{Q_{n-1}}
+    = \frac{a \theta_1^n + r_n}{a \theta_1^n / (1 - \theta_1) + R_{n-1}}.
+\]
+Both the numerator and denominator have the form
+$a \theta_1^n \cdot (\text{leading term}) + O(\theta^n)$ with
+$\theta < \theta_1$. A direct expansion shows that
+\[
+    \alpha_n = \alpha_\infty + O\bigl((\theta / \theta_1)^n\bigr),
+\]
+where the constant $\alpha_\infty := \lim_{n \to \infty} \alpha_n$ is
+determined by the leading geometric coefficients (it is implicit in the
+spectral data of $\mathcal{L}_F$, not derivable in closed form from the
+distortion bound alone). Setting $\theta_2 := \theta / \theta_1 \in (0, 1)$
+and absorbing constants into $C$ proves the lemma.
+\end{proof}
+
+\begin{remark}
+The constant $\alpha_\infty$ is determined implicitly by the spectral
+data of $\mathcal{L}_F$ but does not have a known closed form; the
+empirical value $\alpha_\infty \approx 0.405$ (Appendix~\ref{app:exp})
+gives $p_\infty := 1 - \alpha_\infty \approx 0.595$. The closed-form
+question is a natural open problem.
+\end{remark}

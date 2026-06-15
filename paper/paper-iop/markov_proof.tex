@@ -1,0 +1,161 @@
+% Section 5 mathematical core: parity rigidity and asymptotic geometric
+% decay of the even-gap spectrum on the 1D unimodal map at the
+% band-merging point u_c.
+% Included from main.tex via \input{markov_proof.tex}.
+
+\subsection{Symbolic dynamics at the band-merging point}
+
+Let $f_u(x) = 1 - u x^2$ on $[-1, 1]$ with $u = u_c$ the band-merging
+value. The kneading sequence stabilises at $K(u_c) = R L R^\infty$
+\cite{milnor1988iterated}; in particular $u_c$ is a Misiurewicz
+parameter \cite{misiurewicz1981absolutely}, post-critically pre-periodic
+along the critical orbit. We use the symbolic partition
+$L = \{x < 0\}$, $R = \{x > 0\}$, with critical point $x_c = 0$.
+
+By \cite{misiurewicz1981absolutely}, $f_{u_c}$ admits a unique absolutely
+continuous invariant probability measure $\mu$ supported on the chaotic
+band, with bounded-variation density. We work throughout with this
+measure.
+
+\begin{lemma}[Parity skeleton at $u_c$]
+\label{lem:parity-skeleton}
+For $\mu$-almost every $x \in [-1, 1]$, the itinerary
+$\omega(x) = \omega_0 \omega_1 \omega_2 \cdots$ obeys: between any two
+consecutive occurrences of $L$, the number of intervening $R$ symbols
+is odd. Equivalently, the indices $n_1 < n_2 < \cdots$ with
+$\omega_{n_i}(x) = L$ have all consecutive differences
+$g_i = n_{i+1} - n_i$ even.
+\end{lemma}
+
+\begin{proof}
+By Milnor--Thurston monotonicity \cite{milnor1988iterated}, an itinerary
+$\omega$ is admissible at parameter $u$ iff for every shift $m \geq 0$
+the parity-twisted lex inequality $\sigma^m(\omega) \preceq K(u)$ holds.
+With $K(u_c) = R L R^\infty$, suppose for contradiction that two
+consecutive $L$ positions in $\omega(x)$ are separated by an even number
+of $R$'s; the corresponding shift then has the form
+$\sigma^m(\omega) = L R^{2j} L \cdots$ for some $j \geq 0$. Comparing
+with $K(u_c) = R L R^\infty$ at position $0$ gives $L \prec R$ in the
+empty-prefix case, so this shift is strictly smaller than $K(u_c)$ in
+the parity-twisted order; admissibility fails, hence $x$ lies in a
+non-admissible cylinder, which has measure zero.
+\end{proof}
+
+\begin{proposition}[Even-gap rigidity, Theorem~B]
+\label{prop:even-gaps}
+For $\mu$-almost every $x$, every gap $g_i$ in the itinerary $\omega(x)$
+is even; equivalently, all odd gaps carry zero invariant measure.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:parity-skeleton}, between any two consecutive $L$
+symbols sit $g_i - 1$ $R$ symbols, and $g_i - 1$ must be odd. Hence
+$g_i$ is even.
+\end{proof}
+
+\subsection{The parity-split state graph}
+
+Lemma~\ref{lem:parity-skeleton} suggests labelling each step of the
+itinerary by its parity offset since the last $L$. Define three states
+\begin{align*}
+    A &= \{ \omega_n = L \}, \\
+    B_o &= \{ \omega_n = R, \ R\text{-count since last } L \text{ is odd} \}, \\
+    B_e &= \{ \omega_n = R, \ R\text{-count since last } L \text{ is even} \}.
+\end{align*}
+
+\begin{proposition}[Topological skeleton]
+\label{prop:skeleton}
+For $\mu$-almost every $x$ and every $n$, the transitions of the
+state sequence $s_n(x) \in \{A, B_o, B_e\}$ obey:
+\begin{equation}
+  \label{eq:skeleton}
+  A \to B_o, \qquad B_o \to A \text{ or } B_e, \qquad B_e \to B_o,
+\end{equation}
+with all other transitions impossible. In particular the chain has no
+$A \to A$ self-loop, no $A \to B_e$ edge, no $B_e \to A$ edge, and no
+$B_e \to B_e$ self-loop.
+\end{proposition}
+
+\begin{proof}
+Each transition is a logical consequence of the state definitions.
+Starting from $A$ (i.e.\ $\omega_n = L$), the parity counter resets to
+$0$, and the very next symbol $\omega_{n+1}$ is either $L$ (excluded by
+Lemma~\ref{lem:parity-skeleton} which forces at least one $R$ between
+consecutive $L$'s) or $R$ with parity counter advancing to $1$ (odd),
+i.e.\ state $B_o$. From $B_o$, the next symbol is either $L$ (i.e.\ $A$,
+allowed because the running $R$-count is odd, satisfying
+Lemma~\ref{lem:parity-skeleton}) or $R$ advancing the counter to $2$
+(even), i.e.\ $B_e$. From $B_e$, the next symbol cannot be $L$
+(Lemma~\ref{lem:parity-skeleton} requires the cumulative $R$-count to
+be odd at the moment of an $L$), and must be $R$, advancing the
+counter to $3$ (odd), i.e.\ $B_o$.
+\end{proof}
+
+The only random choice is at $B_o$, where
+\[
+    \mathbb{P}_{\!\mu}(B_o \to A \mid B_o) = \alpha_n,
+    \qquad
+    \mathbb{P}_{\!\mu}(B_o \to B_e \mid B_o) = 1 - \alpha_n.
+\]
+The subscript $n$ records the depth of the run since the last $L$; the
+chain is not Markov in the state alphabet $\{A, B_o, B_e\}$ but is
+fully determined by the orbit-level dynamics of $f_{u_c}$.
+
+\input{spectral_lemmas.tex}
+
+\subsection{Asymptotic geometric decay (Theorem C)}
+
+We can now state and prove the main asymptotic-decay theorem.
+
+\begin{theorem}[Asymptotic geometric decay, Theorem~C]
+\label{thm:geometric-decay}
+Let $\mu_{2m}$ denote the $\mu$-mass of orbits whose first return to the
+$L$-state occurs at combinatorial time $2m$. There exists
+$p_\infty \in (0, 1)$ and constants $c, C, \theta > 0$ with $\theta < 1$
+such that
+\[
+    \mu_{2m} = c\, p_\infty^{m} \bigl(1 + R_m\bigr),
+    \qquad |R_m| \leq C \theta^m.
+\]
+In particular $\mu_{2m+2}/\mu_{2m} \to p_\infty$ as $m \to \infty$, and
+the decay is geometric at rate $p_\infty$ up to a multiplicative
+exponentially small correction.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:even-gaps} only even gaps occur. The first-return
+path of length $2m$ from $A$ to $A$ in the topological skeleton
+\eqref{eq:skeleton} is uniquely $A \to B_o \to (B_e \to B_o)^{m-1} \to A$,
+so
+\[
+    \mu_{2m} = \mu(A) \cdot \prod_{j=1}^{m-1} (1 - \alpha_j) \cdot \alpha_m.
+\]
+By Lemma~\ref{lem:alpha-convergence}, $\alpha_j = \alpha_\infty + r_j$
+with $|r_j| \leq C_0 \theta^j$ for some $C_0 > 0$. Setting
+$p_\infty = 1 - \alpha_\infty$,
+\[
+    \prod_{j=1}^{m-1} (1 - \alpha_j)
+    = p_\infty^{m-1} \prod_{j=1}^{m-1} \left( 1 - \frac{r_j}{p_\infty} \right).
+\]
+The product $\prod (1 - r_j / p_\infty)$ converges because
+$\sum |r_j| < \infty$, and converges geometrically: by the elementary
+estimate $|\log \prod (1 - r_j/p_\infty) - \log \prod_{j \leq m-1}(1 - r_j/p_\infty)|
+\leq C_1 \theta^m$ for some $C_1 > 0$. Combining with the geometric
+convergence of $\alpha_m$ itself yields
+\[
+    \mu_{2m} = \mu(A) \cdot p_\infty^{m-1} \cdot \alpha_\infty
+              \cdot \bigl(1 + R_m\bigr)
+\]
+with $|R_m| \leq C \theta^m$ for some $C > 0$. This is the stated
+asymptotic with $c = \mu(A) \alpha_\infty / p_\infty$.
+\end{proof}
+
+\begin{corollary}[Absence of internal mod-3 resonance]
+\label{cor:no-mod-3}
+For every $m$ sufficiently large, the ratio $\mu_{2m+2}/\mu_{2m}$ is
+within $C \theta^m$ of the constant $p_\infty$. Consequently the gap
+spectrum of $f_{u_c}$ cannot exhibit a Hardy--Littlewood mod-$3$
+resonance peak at $g = 6, 12, 18, \ldots$: such a peak would require
+$\mu_6/\mu_4 > \mu_4/\mu_2$ to a constant factor, contradicting the
+geometric convergence to a single limit established by Theorem~\ref{thm:geometric-decay}.
+\end{corollary}

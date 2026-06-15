@@ -34,3 +34,4 @@ data/
 
 # Temp unzip directory (template files extracted to paper-ets/)
 paper/ETS-template/
+paper/IOP-template/
